@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juan Felipe — I build, test &amp; explore with data.</title>
+<meta name="description" content="Juan Felipe works across analytics, data engineering, QA data, and code. The domain came first — the website is catching up.">
+<link rel="canonical" href="https://arjuanfelipe.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Juan Felipe — I build, test &amp; explore with data.">
+<meta property="og:description" content="Juan Felipe works across analytics, data engineering, QA data, and code. The domain came first — the website is catching up.">
+<meta property="og:url" content="https://arjuanfelipe.com/">
+<meta property="og:site_name" content="Juan Felipe">
+<meta name="theme-color" content="#10141a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2310141a'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='13' fill='%23d3a35a' text-anchor='middle'%3EJF%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #10141a;
+    --fg: #e7ebee;
+    --fg-secondary: #a7b0b9;
+    --fg-tertiary: #8b949c;
+    --fg-quiet: #78828d;
+    --accent: #d3a35a;
+    --accent-hover: #e6bb7c;
+    --border: rgba(211, 163, 90, 0.28);
+    --border-strong: rgba(211, 163, 90, 0.4);
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(28px, 6vw, 64px) clamp(20px, 6vw, 48px);
+  }
+
+  .page {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: clamp(16px, 3vw, 20px);
+  }
+
+  .badge {
+    grid-column: 1 / 5;
+    margin: 0 0 clamp(18px, 4vh, 22px);
+    font: 11px/1 var(--mono);
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .badge span {
+    display: inline-block;
+    border: 1px solid var(--border-strong);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .name {
+    grid-column: 1 / 9;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.1;
+  }
+
+  .tagline {
+    grid-column: 1 / 8;
+    margin: clamp(10px, 2vh, 14px) 0 0;
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--fg-secondary);
+    line-height: 1.5;
+  }
+
+  .meta {
+    grid-column: 9 / 13;
+    grid-row: 2 / 4;
+    align-self: end;
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
+    color: var(--fg-tertiary);
+  }
+
+  .pipe {
+    list-style: none;
+    margin: 0 0 26px;
+    padding: 0;
+    font: 11px/1 var(--mono);
+    letter-spacing: 0.03em;
+    counter-reset: idx;
+  }
+
+  .pipe li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 11px;
+    color: var(--fg-tertiary);
+    counter-increment: idx;
+  }
+
+  .pipe li::before {
+    content: counter(idx, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 9px;
+    color: var(--accent);
+    opacity: 0.85;
+  }
+
+  .msg {
+    font: 12.5px/1.5 var(--sans);
+    color: var(--fg-quiet);
+    margin: 0 0 20px;
+    max-width: 220px;
+  }
+
+  .links {
+    display: flex;
+    gap: 18px;
+    font: 12px/1 var(--mono);
+  }
+
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 2px;
+    border-radius: 2px;
+    transition: color 0.15s ease;
+  }
+
+  .links a:hover {
+    color: var(--accent-hover);
+  }
+
+  .links a:focus-visible {
+    outline: 2px solid var(--accent-hover);
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .badge, .name, .tagline, .meta {
+      grid-column: 1 / -1;
+    }
+
+    .meta {
+      grid-row: auto;
+      align-self: auto;
+      margin-top: 28px;
+      padding-left: 0;
+      padding-top: 26px;
+      border-left: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .msg {
+      max-width: 100%;
+    }
+
+    .links a {
+      padding: 14px 6px;
+      line-height: 1.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links a {
+      transition: none;
+    }
+  }
+</style>
+</head>
+<body>
+<!-- QA check: schema valid, 0 nulls, 1 source of truth. shipped. -->
+<main class="page">
+  <div class="grid">
+    <p class="badge"><span>v0.1</span></p>
+    <h1 class="name">Juan Felipe</h1>
+    <p class="tagline">I build, test &amp; explore with data.</p>
+    <div class="meta">
+      <ul class="pipe">
+        <li>Analytics</li>
+        <li>Data Engineering</li>
+        <li>QA Data</li>
+        <li>Code</li>
+      </ul>
+      <p class="msg">The domain came first. The website is catching up.</p>
+      <nav class="links" aria-label="Profiles">
+        <a href="https://github.com/Ohkuninush" target="_blank" rel="noopener noreferrer">→ GitHub</a>
+        <a href="https://www.linkedin.com/in/juan-ayllon-ramirez-77bab8ab/" target="_blank" rel="noopener noreferrer">→ LinkedIn</a>
+      </nav>
+    </div>
+  </div>
+</main>
+</body>
+</html>
