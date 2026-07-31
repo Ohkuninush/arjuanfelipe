@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WDS — arjuanfelipe</title>
+<link rel="stylesheet" href="../css/wds.css">
+<style>
+  .doc { max-width: var(--wds-container); margin-inline: auto; padding: var(--wds-space-12) var(--wds-margin) var(--wds-space-24); }
+  .doc section { padding-block: var(--wds-space-14); border-top: 1px solid var(--wds-border-subtle); }
+  .doc section:first-of-type { border-top: 0; }
+  .eyebrow { font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); letter-spacing: var(--wds-tracking-caps); color: var(--wds-accent); margin-bottom: var(--wds-space-4); }
+  .sw { display: grid; grid-template-columns: 2.5rem 15rem 6rem 5.5rem 5.5rem auto; gap: var(--wds-space-3); align-items: center; padding: var(--wds-space-2) 0; border-bottom: 1px solid var(--wds-border-subtle); font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); }
+  .sw__chip { width: 2.5rem; height: 1.5rem; border-radius: var(--wds-radius-sm); border: 1px solid var(--wds-border); display: block; }
+  .sw__hex, .sw__num { color: var(--wds-fg-tertiary); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .sp { display: grid; grid-template-columns: 8rem 12rem auto; gap: var(--wds-space-4); align-items: center; padding: var(--wds-space-1) 0; font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); }
+  .sp__bar { height: 10px; background: var(--wds-accent); border-radius: 2px; display: block; }
+  .demo { display: flex; flex-wrap: wrap; gap: var(--wds-space-4); align-items: center; margin-block: var(--wds-space-5); }
+  .grid-demo > div { background: var(--wds-surface); border: 1px solid var(--wds-border-subtle); padding: var(--wds-space-2); text-align: center; font-family: var(--wds-font-mono); font-size: 11px; color: var(--wds-fg-tertiary); border-radius: var(--wds-radius-sm); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem,1fr)); gap: var(--wds-space-5); }
+</style>
+</head>
+<body>
+<a class="wds-skip-link" href="#main">Saltar al contenido</a>
+
+<header class="wds-header"><div class="wds-container wds-header__inner">
+  <span class="wds-mark"><svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg><strong>arjuanfelipe</strong></span>
+  <nav class="wds-nav" aria-label="Documentación">
+    <a href="#color" aria-current="page">Color</a><a href="#type">Tipografía</a>
+    <a href="#space">Espacio</a><a href="#components">Componentes</a>
+    <a href="#a11y">Accesibilidad</a>
+  </nav>
+</div></header>
+
+<main id="main" class="doc">
+
+<section>
+  <p class="eyebrow">WEBSITE DESIGN SYSTEM · v1.0.0</p>
+  <h1 class="wds-hero__title">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</h1>
+  <p class="wds-hero__lead">El lenguaje operativo con el que la identidad se
+    comunica. Consume el CDS 1.0.0; no lo modifica.</p>
+  <div class="demo">
+    <span class="wds-badge">CERO JS</span>
+    <span class="wds-badge">DARK-FIRST</span>
+    <span class="wds-badge wds-badge--success">32/32 CONTRASTE</span>
+    <span class="wds-badge wds-badge--info">CDS cf6b9fe5</span>
+  </div>
+</section>
+
+<section id="color">
+  <p class="eyebrow">01 — COLOR</p>
+  <h2>Todo deriva de la paleta canónica.</h2>
+  <p>Los colores semánticos son el accent canónico rotado en matiz dentro de
+    OKLCH, manteniendo luminancia y croma. Por eso el contraste es constante
+    por construcción, no por ajuste.</p>
+  <div class="demo">
+    <span class="wds-badge wds-badge--success">SUCCESS</span>
+    <span class="wds-badge wds-badge--warning">WARNING</span>
+    <span class="wds-badge wds-badge--danger">DANGER</span>
+    <span class="wds-badge wds-badge--info">INFO</span>
+  </div>
+  <div class="wds-callout wds-callout--warning">
+    <span class="wds-callout__label">Límite</span>
+    <div><strong>danger</strong> queda a solo
+      25.4° de <strong>primary</strong>.
+      Con un accent naranja, un rojo de peligro no puede separarse más sin salir
+      de la familia. Nunca deben aparecer adyacentes sin etiqueta de texto.</div>
+  </div>
+  <h3>Tokens (dark)</h3>
+  <div class="sw"><span class="sw__chip" style="background:#10141a"></span><code>--wds-bg</code><span class="sw__hex">#10141a</span><span class="sw__num">L 0.190</span><span class="sw__num">H 258.4</span><span class="sw__num"> 1.00:1</span></div><div class="sw"><span class="sw__chip" style="background:#181c22"></span><code>--wds-surface</code><span class="sw__hex">#181c22</span><span class="sw__num">L 0.225</span><span class="sw__num">H 258.4</span><span class="sw__num"> 1.08:1</span></div><div class="sw"><span class="sw__chip" style="background:#21262c"></span><code>--wds-surface-elevated</code><span class="sw__hex">#21262c</span><span class="sw__num">L 0.266</span><span class="sw__num">H 253.1</span><span class="sw__num"> 1.21:1</span></div><div class="sw"><span class="sw__chip" style="background:#2b2f36"></span><code>--wds-surface-interactive</code><span class="sw__hex">#2b2f36</span><span class="sw__num">L 0.304</span><span class="sw__num">H 261.7</span><span class="sw__num"> 1.37:1</span></div><div class="sw"><span class="sw__chip" style="background:#272c32"></span><code>--wds-border-subtle</code><span class="sw__hex">#272c32</span><span class="sw__num">L 0.291</span><span class="sw__num">H 253.0</span><span class="sw__num"> 1.31:1</span></div><div class="sw"><span class="sw__chip" style="background:#393d44"></span><code>--wds-border</code><span class="sw__hex">#393d44</span><span class="sw__num">L 0.359</span><span class="sw__num">H 261.7</span><span class="sw__num"> 1.69:1</span></div><div class="sw"><span class="sw__chip" style="background:#5d6269"></span><code>--wds-border-strong</code><span class="sw__hex">#5d6269</span><span class="sw__num">L 0.494</span><span class="sw__num">H 256.7</span><span class="sw__num"> 3.00:1</span></div><div class="sw"><span class="sw__chip" style="background:#e7ebee"></span><code>--wds-fg</code><span class="sw__hex">#e7ebee</span><span class="sw__num">L 0.938</span><span class="sw__num">H 239.8</span><span class="sw__num">15.41:1</span></div><div class="sw"><span class="sw__chip" style="background:#acafb2"></span><code>--wds-fg-secondary</code><span class="sw__hex">#acafb2</span><span class="sw__num">L 0.753</span><span class="sw__num">H 247.9</span><span class="sw__num"> 8.38:1</span></div><div class="sw"><span class="sw__chip" style="background:#909396"></span><code>--wds-fg-tertiary</code><span class="sw__hex">#909396</span><span class="sw__num">L 0.662</span><span class="sw__num">H 247.9</span><span class="sw__num"> 5.98:1</span></div><div class="sw"><span class="sw__chip" style="background:#838789"></span><code>--wds-fg-quiet</code><span class="sw__hex">#838789</span><span class="sw__num">L 0.621</span><span class="sw__num">H 228.9</span><span class="sw__num"> 5.09:1</span></div><div class="sw"><span class="sw__chip" style="background:#ea6a1e"></span><code>--wds-primary</code><span class="sw__hex">#ea6a1e</span><span class="sw__num">L 0.671</span><span class="sw__num">H  45.7</span><span class="sw__num"> 5.79:1</span></div><div class="sw"><span class="sw__chip" style="background:#b09300"></span><code>--wds-warning</code><span class="sw__hex">#b09300</span><span class="sw__num">L 0.670</span><span class="sw__num">H  94.9</span><span class="sw__num"> 6.17:1</span></div><div class="sw"><span class="sw__chip" style="background:#1ab256"></span><code>--wds-success</code><span class="sw__hex">#1ab256</span><span class="sw__num">L 0.670</span><span class="sw__num">H 150.1</span><span class="sw__num"> 6.64:1</span></div><div class="sw"><span class="sw__chip" style="background:#009fe9"></span><code>--wds-info</code><span class="sw__hex">#009fe9</span><span class="sw__num">L 0.670</span><span class="sw__num">H 240.0</span><span class="sw__num"> 6.28:1</span></div><div class="sw"><span class="sw__chip" style="background:#ee5f66"></span><code>--wds-danger</code><span class="sw__hex">#ee5f66</span><span class="sw__num">L 0.670</span><span class="sw__num">H  20.3</span><span class="sw__num"> 5.69:1</span></div><div class="sw"><span class="sw__chip" style="background:#ea6a1e"></span><code>--wds-accent</code><span class="sw__hex">#ea6a1e</span><span class="sw__num">L 0.671</span><span class="sw__num">H  45.7</span><span class="sw__num"> 5.79:1</span></div><div class="sw"><span class="sw__chip" style="background:#ff8444"></span><code>--wds-accent-hover</code><span class="sw__hex">#ff8444</span><span class="sw__num">L 0.741</span><span class="sw__num">H  46.0</span><span class="sw__num"> 7.60:1</span></div><div class="sw"><span class="sw__chip" style="background:#d75b00"></span><code>--wds-accent-active</code><span class="sw__hex">#d75b00</span><span class="sw__num">L 0.620</span><span class="sw__num">H  45.9</span><span class="sw__num"> 4.74:1</span></div><div class="sw"><span class="sw__chip" style="background:#ff8444"></span><code>--wds-focus</code><span class="sw__hex">#ff8444</span><span class="sw__num">L 0.741</span><span class="sw__num">H  46.0</span><span class="sw__num"> 7.60:1</span></div>
+</section>
+
+<section id="type">
+  <p class="eyebrow">02 — TIPOGRAFÍA</p>
+  <h2>Escala modular 1.25, fluida entre 360 y 1280 px.</h2>
+  <p>El cuerpo de texto no encoge en móvil; solo los títulos comprimen, y cuanto
+    más grandes, más comprimen.</p>
+  <div class="wds-table-wrap"><table class="wds-table">
+    <thead><tr><th>token</th><th class="num">mín</th><th class="num">máx</th><th>muestra</th></tr></thead>
+    <tbody><tr><td><code>--wds-text-caption</code></td><td class="num">12.8px</td><td class="num">12.8px</td><td style="font-size:var(--wds-text-caption);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-body</code></td><td class="num">16.0px</td><td class="num">16.0px</td><td style="font-size:var(--wds-text-body);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-lead</code></td><td class="num">18.5px</td><td class="num">20.0px</td><td style="font-size:var(--wds-text-lead);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-h5</code></td><td class="num">18.5px</td><td class="num">20.0px</td><td style="font-size:var(--wds-text-h5);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-h4</code></td><td class="num">21.2px</td><td class="num">25.0px</td><td style="font-size:var(--wds-text-h4);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-h3</code></td><td class="num">24.2px</td><td class="num">31.2px</td><td style="font-size:var(--wds-text-h3);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-h2</code></td><td class="num">27.3px</td><td class="num">39.1px</td><td style="font-size:var(--wds-text-h2);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-h1</code></td><td class="num">30.5px</td><td class="num">48.8px</td><td style="font-size:var(--wds-text-h1);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr><tr><td><code>--wds-text-display</code></td><td class="num">37.8px</td><td class="num">61.0px</td><td style="font-size:var(--wds-text-display);line-height:1.2">Now <svg class="wds-glyph" viewBox="0 0 149.31 1000.0" aria-hidden="true"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg> understand.</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="space">
+  <p class="eyebrow">03 — ESPACIO Y REJILLA</p>
+  <h2>Base 4. Ningún valor arbitrario.</h2>
+  <div class="sp"><span class="sp__bar" style="width:4px"></span><code>--wds-space-1</code><span class="sw__num">4px</span></div><div class="sp"><span class="sp__bar" style="width:8px"></span><code>--wds-space-2</code><span class="sw__num">8px</span></div><div class="sp"><span class="sp__bar" style="width:12px"></span><code>--wds-space-3</code><span class="sw__num">12px</span></div><div class="sp"><span class="sp__bar" style="width:16px"></span><code>--wds-space-4</code><span class="sw__num">16px</span></div><div class="sp"><span class="sp__bar" style="width:20px"></span><code>--wds-space-5</code><span class="sw__num">20px</span></div><div class="sp"><span class="sp__bar" style="width:24px"></span><code>--wds-space-6</code><span class="sw__num">24px</span></div><div class="sp"><span class="sp__bar" style="width:32px"></span><code>--wds-space-8</code><span class="sw__num">32px</span></div><div class="sp"><span class="sp__bar" style="width:40px"></span><code>--wds-space-10</code><span class="sw__num">40px</span></div><div class="sp"><span class="sp__bar" style="width:48px"></span><code>--wds-space-12</code><span class="sw__num">48px</span></div><div class="sp"><span class="sp__bar" style="width:56px"></span><code>--wds-space-14</code><span class="sw__num">56px</span></div><div class="sp"><span class="sp__bar" style="width:64px"></span><code>--wds-space-16</code><span class="sw__num">64px</span></div><div class="sp"><span class="sp__bar" style="width:80px"></span><code>--wds-space-20</code><span class="sw__num">80px</span></div><div class="sp"><span class="sp__bar" style="width:96px"></span><code>--wds-space-24</code><span class="sw__num">96px</span></div><div class="sp"><span class="sp__bar" style="width:128px"></span><code>--wds-space-32</code><span class="sw__num">128px</span></div><div class="sp"><span class="sp__bar" style="width:160px"></span><code>--wds-space-40</code><span class="sw__num">160px</span></div><div class="sp"><span class="sp__bar" style="width:192px"></span><code>--wds-space-48</code><span class="sw__num">192px</span></div><div class="sp"><span class="sp__bar" style="width:256px"></span><code>--wds-space-64</code><span class="sw__num">256px</span></div><div class="sp"><span class="sp__bar" style="width:320px"></span><code>--wds-space-80</code><span class="sw__num">320px</span></div><div class="sp"><span class="sp__bar" style="width:384px"></span><code>--wds-space-96</code><span class="sw__num">384px</span></div><div class="sp"><span class="sp__bar" style="width:512px"></span><code>--wds-space-128</code><span class="sw__num">512px</span></div>
+  <h3>Rejilla de 12 columnas</h3>
+  <div class="wds-grid grid-demo"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div></div>
+  <p class="wds-caption">En móvil colapsa a 4 columnas. Ancho de lectura
+    limitado a 68ch; bloques de código a
+    92ch.</p>
+</section>
+
+<section id="components">
+  <p class="eyebrow">04 — COMPONENTES</p>
+  <h2>Construidos sobre HTML nativo.</h2>
+
+  <h3>Botones</h3>
+  <div class="demo">
+    <button class="wds-btn wds-btn--primary">Primario</button>
+    <button class="wds-btn wds-btn--secondary">Secundario</button>
+    <button class="wds-btn wds-btn--ghost">Fantasma</button>
+    <button class="wds-btn wds-btn--danger">Peligro</button>
+    <button class="wds-btn wds-btn--secondary" disabled>Desactivado</button>
+  </div>
+
+  <h3>Tarjetas</h3>
+  <div class="cards">
+    <article class="wds-card wds-card--interactive">
+      <p class="wds-card__meta">PROYECTO · 2026</p>
+      <h4 class="wds-card__title">Identity Production System</h4>
+      <p>110 activos generados desde una especificación de 5 números.</p>
+    </article>
+    <article class="wds-card wds-card--interactive">
+      <p class="wds-card__meta">NOTA</p>
+      <h4 class="wds-card__title">Sobre la simetría rotacional</h4>
+      <p>Una I normal es simétrica por espejo. Ésta lo es por rotación.</p>
+    </article>
+  </div>
+
+  <h3>Avisos</h3>
+  <div class="wds-stack">
+    <div class="wds-callout wds-callout--info"><span class="wds-callout__label">Info</span><div>El sistema es dark-first; el tema claro se deriva del mismo motor.</div></div>
+    <div class="wds-callout wds-callout--danger"><span class="wds-callout__label">Peligro</span><div>Ningún componente introduce JavaScript sin justificarlo.</div></div>
+  </div>
+
+  <h3>Acordeón <span class="wds-badge">&lt;details&gt;</span></h3>
+  <details class="wds-accordion"><summary>¿Por qué cero JavaScript?</summary>
+    <div class="wds-accordion__body">Porque hasta ahora ninguna interacción lo
+      ha exigido. Acordeones, navegación móvil y diálogos existen como elementos
+      nativos, accesibles por teclado sin una línea de script.</div></details>
+  <details class="wds-accordion"><summary>¿Qué necesitaría JavaScript?</summary>
+    <div class="wds-accordion__body">Búsqueda, filtrado de listas, y
+      posicionamiento de tooltips en espacios estrechos. Están marcados como
+      tales y no se han falseado.</div></details>
+
+  <h3>Formularios</h3>
+  <div style="max-width:26rem">
+    <div class="wds-field">
+      <label class="wds-label" for="e">Correo</label>
+      <input class="wds-input" id="e" type="email" placeholder="tu@correo.com">
+      <span class="wds-help">Nunca se comparte.</span>
+    </div>
+    <div class="wds-field">
+      <label class="wds-label" for="x">Campo con error</label>
+      <input class="wds-input" id="x" aria-invalid="true" value="no válido">
+      <span class="wds-error">Este valor no es válido.</span>
+    </div>
+  </div>
+
+  <h3>Métricas</h3>
+  <div class="wds-metrics">
+    <div><div class="wds-metric__value">110</div><div class="wds-metric__label">ACTIVOS</div></div>
+    <div><div class="wds-metric__value">24/24</div><div class="wds-metric__label">REGRESIÓN</div></div>
+    <div><div class="wds-metric__value">0</div><div class="wds-metric__label">JAVASCRIPT</div></div>
+    <div><div class="wds-metric__value">5</div><div class="wds-metric__label">PARÁMETROS</div></div>
+  </div>
+
+  <h3>Línea de tiempo</h3>
+  <ul class="wds-timeline">
+    <li><strong>Fase IV</strong> — Canonical Design Specification congelada.</li>
+    <li><strong>Fase V</strong> — Identity Production System, 110 activos.</li>
+    <li><strong>Fase VI</strong> — Website Design System.</li>
+  </ul>
+
+  <h3>Estados</h3>
+  <div class="demo" style="align-items:stretch">
+    <div class="wds-empty" style="flex:1">Nada que mostrar todavía.</div>
+  </div>
+  <div class="wds-stack" style="max-width:22rem">
+    <div class="wds-skeleton" style="height:1rem"></div>
+    <div class="wds-skeleton" style="height:1rem;width:70%"></div>
+    <div class="wds-progress"><div class="wds-progress__bar" style="width:62%"></div></div>
+  </div>
+</section>
+
+<section id="a11y">
+  <p class="eyebrow">05 — ACCESIBILIDAD</p>
+  <h2>Cada par verificado por cálculo.</h2>
+  <p>Ningún color entra en el sistema por su aspecto. Todos los contratos de
+    contraste se resuelven en el build y detienen la compilación si fallan.</p>
+  <div class="wds-table-wrap"><table class="wds-table">
+    <thead><tr><th>tema</th><th>frente</th><th>fondo</th><th class="num">ratio</th><th class="num">mín</th><th>nivel</th></tr></thead>
+    <tbody><tr><td>dark</td><td><code>fg</code></td><td><code>bg</code></td><td class="num">15.41</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>dark</td><td><code>fg-secondary</code></td><td><code>bg</code></td><td class="num">8.38</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>dark</td><td><code>fg-tertiary</code></td><td><code>bg</code></td><td class="num">5.98</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>fg-quiet</code></td><td><code>bg</code></td><td class="num">5.09</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>fg</code></td><td><code>surface</code></td><td class="num">14.26</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>dark</td><td><code>fg-secondary</code></td><td><code>surface</code></td><td class="num">7.76</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>dark</td><td><code>fg</code></td><td><code>surface-elevated</code></td><td class="num">12.71</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>dark</td><td><code>accent</code></td><td><code>bg</code></td><td class="num">5.79</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>accent-hover</code></td><td><code>bg</code></td><td class="num">7.60</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>dark</td><td><code>primary</code></td><td><code>bg</code></td><td class="num">5.79</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>success</code></td><td><code>bg</code></td><td class="num">6.64</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>warning</code></td><td><code>bg</code></td><td class="num">6.17</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>danger</code></td><td><code>bg</code></td><td class="num">5.69</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>info</code></td><td><code>bg</code></td><td class="num">6.28</td><td class="num">4.5</td><td>AA</td></tr><tr><td>dark</td><td><code>focus</code></td><td><code>bg</code></td><td class="num">7.60</td><td class="num">3.0</td><td>AAA</td></tr><tr><td>dark</td><td><code>border-strong</code></td><td><code>bg</code></td><td class="num">3.00</td><td class="num">3.0</td><td>fail</td></tr><tr><td>light</td><td><code>fg</code></td><td><code>bg</code></td><td class="num">16.52</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>light</td><td><code>fg-secondary</code></td><td><code>bg</code></td><td class="num">8.81</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>light</td><td><code>fg-tertiary</code></td><td><code>bg</code></td><td class="num">5.97</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>fg-quiet</code></td><td><code>bg</code></td><td class="num">4.83</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>fg</code></td><td><code>surface</code></td><td class="num">15.49</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>light</td><td><code>fg-secondary</code></td><td><code>surface</code></td><td class="num">8.26</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>light</td><td><code>fg</code></td><td><code>surface-elevated</code></td><td class="num">14.55</td><td class="num">7.0</td><td>AAA</td></tr><tr><td>light</td><td><code>accent</code></td><td><code>bg</code></td><td class="num">5.60</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>accent-hover</code></td><td><code>bg</code></td><td class="num">7.49</td><td class="num">4.5</td><td>AAA</td></tr><tr><td>light</td><td><code>primary</code></td><td><code>bg</code></td><td class="num">5.60</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>success</code></td><td><code>bg</code></td><td class="num">4.90</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>warning</code></td><td><code>bg</code></td><td class="num">5.29</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>danger</code></td><td><code>bg</code></td><td class="num">5.78</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>info</code></td><td><code>bg</code></td><td class="num">5.19</td><td class="num">4.5</td><td>AA</td></tr><tr><td>light</td><td><code>focus</code></td><td><code>bg</code></td><td class="num">7.49</td><td class="num">3.0</td><td>AAA</td></tr><tr><td>light</td><td><code>border-strong</code></td><td><code>bg</code></td><td class="num">3.03</td><td class="num">3.0</td><td>fail</td></tr></tbody>
+  </table></div>
+</section>
+
+</main>
+
+<footer class="wds-footer"><div class="wds-container">
+  WDS v1.0.0 · consume CDS 1.0.0 ·
+  glifo B-PRIME-COMPENSATED · generado, no escrito a mano.
+</div></footer>
+</body>
+</html>

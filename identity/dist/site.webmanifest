@@ -1,0 +1,39 @@
+{
+  "background_color": "#10141a",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "/android/pwa-192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/android/pwa-512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "/android/pwa-512-maskable.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "monochrome",
+      "sizes": "any",
+      "src": "/android/monochrome-512.svg",
+      "type": "image/svg+xml"
+    },
+    {
+      "sizes": "any",
+      "src": "/favicon/favicon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "id": "/",
+  "name": "arjuanfelipe",
+  "orientation": "any",
+  "short_name": "arjuanfelipe",
+  "start_url": "/",
+  "theme_color": "#10141a"
+}

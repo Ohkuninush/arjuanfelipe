@@ -1,0 +1,388 @@
+{
+  "$schema": "./cds.schema.md",
+  "cds_version": "1.0.0",
+  "identity": {
+    "project": "arjuanfelipe",
+    "canonical_glyph": "B-PRIME-COMPENSATED",
+    "display_name": "B′ · COMPENSATED",
+    "status": "FROZEN",
+    "freeze_date": "2026-07-30",
+    "supersedes": null,
+    "wordmark": "Now I understand."
+  },
+
+  "coordinate_system": {
+    "units": "design units (du)",
+    "units_per_cap_height": 1000,
+    "x_axis": "rightward positive",
+    "y_axis": "downward positive",
+    "origin": "top-left of the glyph bounding box",
+    "note": "y grows downward to match the SVG user space directly. No flip is applied at generation time."
+  },
+
+  "parameters": {
+    "_role": "NORMATIVE LITERALS. These are the source of truth. They are not to be re-derived.",
+    "cap_height": 1000,
+    "stroke_width": 77.31,
+    "overhang": 36.0,
+    "elevation": 30.0,
+    "handle_horizontal": 0.40,
+    "handle_vertical": 0.10
+  },
+
+  "derived": {
+    "_role": "Computed from parameters by exact closed-form expressions. Any generator MUST reproduce these to the stated precision.",
+    "half_stroke": 38.655,
+    "axis_x": 74.655,
+    "semi_extent": 74.655,
+    "y_top": 38.655,
+    "y_bottom": 961.345,
+    "total_width": 149.31,
+    "total_height": 1000.0,
+    "rotation_centre": [74.655, 500.0]
+  },
+
+  "control_points": {
+    "_role": "NORMATIVE. Exact values. Generators must emit these, not recompute them approximately.",
+    "P0": [149.310, 38.655],
+    "C1": [119.448, 38.655],
+    "C2": [74.655, 41.655],
+    "P3": [74.655, 68.655],
+    "L1": [74.655, 931.345],
+    "Q1": [74.655, 958.345],
+    "Q2": [29.862, 961.345],
+    "P6": [0.000, 961.345]
+  },
+
+  "path": {
+    "_role": "NORMATIVE. The canonical centreline. Rendered as an open stroked path, never as a filled outline.",
+    "d": "M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345",
+    "fill": "none",
+    "stroke_width": 77.31,
+    "stroke_linecap": "butt",
+    "stroke_linejoin": "miter",
+    "sha256": "cf6b9fe5350776e6514853257925c045b339370c3485d471dca5acaa314d3ad3"
+  },
+
+  "curves": {
+    "_role": "NORMATIVE. Complete enumeration of segments, tangents, continuity constraints and terminals. Nothing about the outline is left implicit.",
+
+    "segments": [
+      {
+        "id": "S1",
+        "type": "cubic-bezier",
+        "role": "upper transition",
+        "start": "P0", "control_1": "C1", "control_2": "C2", "end": "P3",
+        "arc_length_du": 88.136878,
+        "turn_degrees": 90.0,
+        "monotonic": true,
+        "inflection_points": 0
+      },
+      {
+        "id": "S2",
+        "type": "line",
+        "role": "stem",
+        "start": "P3", "end": "L1",
+        "arc_length_du": 862.690000,
+        "curvature": 0.0
+      },
+      {
+        "id": "S3",
+        "type": "cubic-bezier",
+        "role": "lower transition",
+        "start": "L1", "control_1": "Q1", "control_2": "Q2", "end": "P6",
+        "arc_length_du": 88.136878,
+        "turn_degrees": 90.0,
+        "monotonic": true,
+        "inflection_points": 0,
+        "derivation": "S1 rotated 180 degrees about the glyph centre. Never authored independently."
+      }
+    ],
+    "total_centreline_length_du": 1038.963756,
+    "segment_symmetry_error_du": 1.68e-12,
+
+    "tangents": [
+      {"at": "P0", "segment": "S1", "t": 0.0, "unit_vector": [-1.0, 0.0], "angle_deg": 180.0, "note": "exactly horizontal; the terminal cap is therefore exactly vertical"},
+      {"at": "P3", "segment": "S1", "t": 1.0, "unit_vector": [0.0, 1.0], "angle_deg": 90.0},
+      {"at": "P3-L1", "segment": "S2", "t": null, "unit_vector": [0.0, 1.0], "angle_deg": 90.0},
+      {"at": "L1", "segment": "S3", "t": 0.0, "unit_vector": [0.0, 1.0], "angle_deg": 90.0},
+      {"at": "P6", "segment": "S3", "t": 1.0, "unit_vector": [-1.0, 0.0], "angle_deg": 180.0}
+    ],
+
+    "curvature": [
+      {"at": "P0", "kappa": 0.0022428086, "kappa_x_stroke": 0.173392, "radius_du": 445.8695},
+      {"at": "P3", "kappa": 0.0409629630, "kappa_x_stroke": 3.166847, "radius_du": 24.4123},
+      {"at": "S1 maximum", "t": 0.8925, "kappa": 0.0513619052, "kappa_x_stroke": 3.970789, "radius_du": 19.4697},
+      {"at": "S2", "kappa": 0.0, "kappa_x_stroke": 0.0, "radius_du": null}
+    ],
+
+    "continuity": [
+      {
+        "junction": "P3 (S1 to S2)",
+        "G0": "exact — shared point",
+        "G1": "EXACT — both tangents are (0,1) at 90 degrees. Zero angular error.",
+        "G2": "DISCONTINUOUS — curvature jumps from 0.0409629630 to 0. Jump magnitude 0.0409629630.",
+        "accepted": true,
+        "rationale": "G2 continuity would require a transition curve (clothoid) or a much longer handle, both of which raise peak curvature or add a decision that derives from nothing. The jump is invisible at the stroke widths in use. See DD-005."
+      },
+      {
+        "junction": "L1 (S2 to S3)",
+        "G0": "exact — shared point",
+        "G1": "EXACT — identical to P3 by rotational symmetry.",
+        "G2": "DISCONTINUOUS — identical magnitude to P3.",
+        "accepted": true,
+        "rationale": "Follows from DD-001; not an independent decision."
+      }
+    ],
+
+    "terminals": [
+      {
+        "id": "T-UPPER",
+        "at": "P0",
+        "style": "butt",
+        "cut_normal_to_tangent": true,
+        "cut_orientation": "vertical",
+        "cut_from": [149.31, 0.0],
+        "cut_to": [149.31, 77.31],
+        "note": "Defines the top edge of the bounding box at y = 0."
+      },
+      {
+        "id": "T-LOWER",
+        "at": "P6",
+        "style": "butt",
+        "cut_normal_to_tangent": true,
+        "cut_orientation": "vertical",
+        "cut_from": [0.0, 922.69],
+        "cut_to": [0.0, 1000.0],
+        "note": "Defines the bottom edge of the bounding box at y = 1000. Derived from T-UPPER by DD-001."
+      }
+    ],
+
+    "outline_note": "The visible outline is the offset of the centreline at half the stroke width. Because the minimum radius of curvature (19.4697 du) is smaller than half the stroke width (38.655 du), the INNER offset self-intersects and the interior of each elbow resolves as a vertex rather than an arc. The OUTER offset never self-intersects, since the turn is exactly 90 degrees and monotonic. Measured fill widths confirm the stroke never pinches. See DEF-001 and test T13."
+  },
+
+  "bounding_box": {
+    "x": 0.0,
+    "y": 0.0,
+    "width": 149.31,
+    "height": 1000.0,
+    "note": "Includes the stroke. The butt caps are vertical, so they add no horizontal extent; they define the top and bottom edges exactly."
+  },
+
+  "metrics": {
+    "_role": "PROVISIONAL — NOT FROZEN. Composition metrics depend on the neighbouring typeface and have not been measured against a real font.",
+    "status": "PROVISIONAL",
+    "left_side_bearing": 125.3,
+    "right_side_bearing": 125.3,
+    "advance_width": 399.91,
+    "baseline_y": 1000.0,
+    "ascender_y": 0.0,
+    "descender_y": 1000.0,
+    "blocked_on": "Measuring the cap height and stem width of the actual system font served by the site on each target platform."
+  },
+
+  "tolerances": {
+    "control_point_precision_du": 0.001,
+    "stroke_width_tolerance_du": 0.01,
+    "rotational_symmetry_error_du": 0.0,
+    "mass_residual_vs_reference_I": {
+      "value": -0.0135,
+      "uncertainty": 0.015,
+      "note": "Measured against a plain 85 du stem of the same cap height. The residual is within the noise of the rasterised measurement; see DD-009."
+    }
+  },
+
+  "known_defects": [
+    {
+      "id": "DEF-001",
+      "name": "Dense joint",
+      "measurement": "+8.00% local density at the elbow versus the stem",
+      "method": "Gaussian integration at sigma = 0.5 x stroke width, validated against a plain-stem control measuring +0.00%",
+      "status": "ACCEPTED, UNCORRECTED",
+      "reason": "The standard correction is to thin the joint, which would break DD-002 (constant stroke width).",
+      "scale_dependence": "None. Measured at +7.53% / +8.00% / +7.41% for candidates A / B / C. The defect belongs to the family, not to the gesture size."
+    }
+  ],
+
+  "rendering": {
+    "minimum_legible_size_px": 16,
+    "gesture_resolves_above_px": 96,
+    "gesture_subpixel_below_px": 62,
+    "antialiasing": "Required. The glyph has no horizontal or vertical edges other than the caps and the stem sides; disabling antialiasing destroys the elbow.",
+    "pixel_fitting": {
+      "policy": "Snap the stem edges to whole pixels at sizes below 48 px; let the elbow fall where it falls.",
+      "rationale": "The stem carries the letter's identity at small sizes. The elbow is sub-pixel there by design (see gesture_subpixel_below_px) and gains nothing from fitting."
+    },
+    "small_size_variant": {
+      "threshold_px": 12,
+      "action": "Substitute a plain stem of width equal to stroke_width.",
+      "rationale": "Below 12 px the elbow contributes less than one pixel of coverage while still costing ink, which shifts the letter's colour without producing a visible gesture."
+    }
+  },
+
+  "construction_algorithm": {
+    "_role": "Reproduces derived values and control points from parameters. Exact, no iteration.",
+    "steps": [
+      "half_stroke = stroke_width / 2",
+      "semi_extent = overhang + half_stroke",
+      "axis_x = semi_extent",
+      "y_top = half_stroke",
+      "y_bottom = cap_height - half_stroke",
+      "P0 = (axis_x + semi_extent, y_top)",
+      "C1 = (axis_x + semi_extent * (1 - handle_horizontal), y_top)",
+      "C2 = (axis_x, y_top + elevation * handle_vertical)",
+      "P3 = (axis_x, y_top + elevation)",
+      "L1 = rotate180(P3)",
+      "Q1 = rotate180(C2)",
+      "Q2 = rotate180(C1)",
+      "P6 = rotate180(P0)",
+      "rotate180(x, y) = (2 * axis_x - x, cap_height - y)"
+    ]
+  },
+
+  "decisions": [
+    {
+      "id": "DD-001",
+      "date": "2026-07-30",
+      "title": "Rotational symmetry of 180 degrees",
+      "previous_rule": "Unconstrained terminal placement",
+      "new_rule": "The lower terminal is the upper terminal rotated 180 degrees about the glyph centre. Exact, not approximate.",
+      "evidence": "A conventional I is mirror-symmetric: both terminals point the same way. An integral sign is rotationally symmetric: they point opposite ways. This is the only structural property the two share, and therefore the only one that can carry the meaning.",
+      "justification": "Collapses two independent terminals into one parameter set and is the sole carrier of the concept.",
+      "engineering_implications": "Halves the parameter space. Generators derive the lower half; it is never authored.",
+      "downstream_impact": "All assets. Any asset breaking this symmetry is invalid.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-002",
+      "date": "2026-07-30",
+      "title": "Constant stroke width",
+      "previous_rule": "Modulated stroke permitted",
+      "new_rule": "Stroke width is constant along the entire path.",
+      "evidence": "Modulation requires choosing a contrast axis and a contrast amount, neither of which derives from anything in the brief.",
+      "justification": "Reduction before addition.",
+      "engineering_implications": "The glyph is a stroked centreline, not a filled outline. This is why DEF-001 cannot be corrected.",
+      "downstream_impact": "Blocks the standard fix for the dense joint.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-003",
+      "date": "2026-07-30",
+      "title": "Butt terminals",
+      "previous_rule": "Terminal style unconstrained",
+      "new_rule": "stroke-linecap = butt. Terminals are cut perpendicular to the tangent.",
+      "evidence": "The tangent at each terminal is exactly horizontal, so the cap is exactly vertical.",
+      "justification": "A perpendicular cut is the absence of a decision; rounding or angling adds one.",
+      "engineering_implications": "Defines the bounding box top and bottom edges exactly at y=0 and y=1000.",
+      "downstream_impact": "All assets.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-004",
+      "date": "2026-07-30",
+      "title": "Monotonic 90 degree transition",
+      "previous_rule": "Arbitrary curve permitted between terminal and stem",
+      "new_rule": "The transition turns exactly 90 degrees and is monotonic in both x and y. No inflection, no counter-curve.",
+      "evidence": "Guaranteed by construction for handle_horizontal in (0,1) and handle_vertical in [0,1).",
+      "justification": "Any inflection is a visual event without a cause.",
+      "engineering_implications": "Guarantees the outer offset never self-intersects.",
+      "downstream_impact": "All assets.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-005",
+      "date": "2026-07-30",
+      "title": "Handle values",
+      "previous_rule": "Handles free",
+      "new_rule": "handle_horizontal = 0.40, handle_vertical = 0.10",
+      "evidence": "Pareto front between peak curvature and total curvature variation over a 285-point sweep. The front held 12 points; this is its centre.",
+      "justification": "Two objectives in direct conflict: driving curvature to zero at both ends (handle_horizontal = 1, handle_vertical = 0) concentrates all flexion in the middle and yields the worst peak curvature of the family. The chosen point balances them.",
+      "engineering_implications": "Tangent at P0 is exactly horizontal; tangent at P3 is exactly vertical. G1 continuity with the stem is exact. G2 is not continuous: curvature jumps to zero at the stem.",
+      "downstream_impact": "All assets.",
+      "confidence": "MEDIUM",
+      "note": "The front is flat: peak curvature varies 10% and total variation 34% across it. Another point on the front would be defensible.",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-006",
+      "date": "2026-07-30",
+      "title": "Rejection of round-01 geometry",
+      "previous_rule": "Working baseline: stroke 120, overhang 100, elevation 60",
+      "new_rule": "Rejected.",
+      "evidence": "+20.0% ink versus a plain stem, against a 10% limit. Total width 0.320 of cap height against a feasible range of 0.13 to 0.19.",
+      "justification": "The glyph is the only drawn letter inside a sans without serifs. A 20% ink excess betrays it as a blot by weight before anyone examines its shape.",
+      "engineering_implications": "None; superseded entirely.",
+      "downstream_impact": "All round-01 assets are void.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-007",
+      "date": "2026-07-30",
+      "title": "Feasible region for the gesture",
+      "previous_rule": "Overhang and elevation unconstrained",
+      "new_rule": "overhang in [22, 50], elevation in [21, 49], overhang > elevation.",
+      "evidence": "Four thresholds: the gesture must not resolve at 16 px (elevation < 62.5), must resolve at 96 px (elevation and overhang >= 20.8), and ink excess must stay at or below 10% (overhang <= 50).",
+      "justification": "Bounds the gesture on all four sides.",
+      "engineering_implications": "435 feasible lattice points. The region constrains but does not determine.",
+      "downstream_impact": "Any future revision of overhang or elevation must stay inside this region or supersede DD-007.",
+      "confidence": "MEDIUM",
+      "note": "Three of the four thresholds are assumptions, not derivations: 2 px at 96 px, 1 px at 16 px, and the 10% ink limit. The fourth (overhang > elevation) is a typographic judgement.",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-008",
+      "date": "2026-07-30",
+      "title": "Selection of candidate B",
+      "previous_rule": "Three candidates open: A (22, 21), B (36, 30), C (50, 40)",
+      "new_rule": "overhang = 36, elevation = 30.",
+      "evidence": "Centroid of the feasible region of DD-007.",
+      "justification": "No derivable constraint separates points inside the region. The centroid was adopted as the working baseline and subsequently frozen by the project owner.",
+      "engineering_implications": "None beyond fixing the two parameters.",
+      "downstream_impact": "All assets.",
+      "confidence": "LOW",
+      "note": "This is the weakest decision in the CDS. It was made by selection, not by evidence. The perceptual question that would have discriminated between A, B and C was never answered.",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-009",
+      "date": "2026-07-30",
+      "title": "Stroke width compensated; inheritance from the neighbouring typeface abandoned",
+      "previous_rule": "stroke_width inherited from the surrounding typeface stem (85 du)",
+      "new_rule": "stroke_width = 77.31 du, as a NORMATIVE LITERAL.",
+      "evidence": "The terminals add mass. Bisection on integrated rasterised mass against a plain 85 du stem converged to 77.31 at a 160 px measurement.",
+      "justification": "Without compensation the letter weighs about 4.3% more than its neighbours.",
+      "engineering_implications": "CRITICAL — this decision supersedes the frozen rule that stroke width is inherited from the neighbouring typeface. The letter's stem is now 9.0% thinner than its neighbours. One betrayal (weight) has been traded for another (stem thickness).",
+      "downstream_impact": "All assets. Any tooling that assumed the stem matched the surrounding font is invalid.",
+      "confidence": "LOW",
+      "note": "The derivation does NOT converge. Re-solving at 100, 160, 240, 320 and 400 px yields 77.78, 77.31, 77.72, 77.38 and 78.25 respectively: a spread of 0.94 du. The rasterised mass is stepped, so bisection converges to an arbitrary point inside a step. THEREFORE 77.31 IS NORMATIVE BY FREEZE, NOT BY DERIVATION. Generators must read the literal. Re-running the derivation is not a valid way to obtain it and will not reproduce it.",
+      "status": "FROZEN"
+    },
+    {
+      "id": "DD-010",
+      "date": "2026-07-30",
+      "title": "Dense joint accepted without correction",
+      "previous_rule": "Optical defects to be corrected",
+      "new_rule": "DEF-001 is accepted and left uncorrected.",
+      "evidence": "+8.00% local density at the elbow, robust across integration radii, with a plain-stem control at +0.00%.",
+      "justification": "The correction requires thinning the joint, which breaks DD-002.",
+      "engineering_implications": "The defect ships. It is documented so that it is never rediscovered as a bug.",
+      "downstream_impact": "Visible when squinting or at small sizes. Not visible at display sizes.",
+      "confidence": "HIGH",
+      "status": "FROZEN"
+    }
+  ],
+
+  "version_history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-07-30",
+      "summary": "Initial freeze. Canonical glyph B′ · COMPENSATED. Decisions DD-001 through DD-010.",
+      "supersedes": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "artefacts": {
+    "css/base.css": {
+      "bytes": 2990,
+      "sha256": "d4a3e855d3ef9837c4e5afe4660121bc4e6123aa1b83b5a4772b7868aeaa7c3d"
+    },
+    "css/components.css": {
+      "bytes": 15784,
+      "sha256": "a8aacc5ffe8342681e71d86a50f9e0304cf9afc0f539d35c3d7592cded1b5189"
+    },
+    "css/tokens.css": {
+      "bytes": 9120,
+      "sha256": "316c696dfd4cbf6548f592baa9dc53ecfcb6da6b5fd476857bc83a96b99d054b"
+    },
+    "css/wds.css": {
+      "bytes": 27944,
+      "sha256": "ca8d650eef2ca7a97552ce7f9b9b723cb71d9f1e5e95380e3aef77753bcca7c2"
+    },
+    "docs/index.html": {
+      "bytes": 25719,
+      "sha256": "ab18ebe79fb6ce9019cfcc2ecb186a9507c8044715e9a0249b8f0a6622ffbda1"
+    }
+  },
+  "consumes_cds_version": "1.0.0",
+  "consumes_glyph": "B-PRIME-COMPENSATED",
+  "consumes_path_sha256": "cf6b9fe5350776e6514853257925c045b339370c3485d471dca5acaa314d3ad3",
+  "contrast_contracts": {
+    "checked": 32,
+    "met": 32
+  },
+  "release_digest": "ee3a5813771e1266a5a2b907fb2eafafe9df266cdd18c57d633701c65f915d7a",
+  "wds_version": "1.0.0"
+}
