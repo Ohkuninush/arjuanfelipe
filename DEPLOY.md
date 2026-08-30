@@ -51,35 +51,17 @@ nada más**.
   con guard `if ($is_cloudflare = 0) { return 403; }`.
 - CI verificado operativo el 2026-08-30.
 
-### 🚫 BLOQUEANTE: `deploy.sh` sólo publica `index.html`
+### `deploy.sh` — publica el árbol multipágina (actualizado 2026-08-30)
 
 `/opt/sites/arjuanfelipe/deploy.sh` hace `git fetch` + `reset --hard
-origin/main` y **publica sólo `index.html`** de forma atómica en el webroot.
-Los subdirectorios (`/applications/`, `/work/`, `/lab/`, `/cv/`, `/es/`) y
-`/assets/` **no se copian**.
+origin/main` en `$SITE/repo`, construye un staging con **allowlist**
+(`index.html assets applications es work lab cv identity/dist`) y hace
+`rsync -a --delete` de staging a `$SITE/webroot`. Backup del script anterior
+(sólo `index.html`) en `deploy.sh.bak.20260830`.
 
-Si se hace `git push origin main` con este commit tal cual:
-- el nuevo `index.html` (nav con enlaces a `/work/`, `/applications/`, …) se
-  publica, pero **esos enlaces darían 404** — el sitio queda roto.
-
-**Antes de pushear hay que actualizar `deploy.sh` en el VPS** para que
-sincronice el árbol completo al webroot, p.ej.:
-
-```sh
-# dentro de deploy.sh, tras el reset --hard origin/main, en el repo espejo:
-rsync -a --delete \
-  --exclude '.git' --exclude 'site' --exclude 'wds' --exclude 'identity/core' \
-  --exclude '__pycache__' --exclude '*.md' --exclude '*.zip' \
-  "$REPO_DIR"/ /opt/sites/arjuanfelipe/webroot/
-nginx -t && systemctl reload nginx   # sólo si el vhost cambia; normal: no hace falta
-```
-
-(Ajustar a cómo esté escrito hoy `deploy.sh` — publicación atómica vía symlink
-swap, permisos, etc. No tocar Nginx/DNS/TLS ni otras apps de `/opt/sites/*`.)
-
-Comprobar también en el vhost:
-`try_files $uri $uri/ $uri/index.html =404;` — necesario para que
-`/applications/` resuelva a `/applications/index.html`.
+Nginx no necesitó cambios: `location / { try_files $uri $uri/ =404; }` +
+`index index.html;` ya resuelve `/applications/` → `/applications/index.html`.
+No se tocó Nginx/DNS/TLS ni otras apps de `/opt/sites/*`.
 
 ---
 
@@ -103,16 +85,18 @@ Comprobar también en el vhost:
 - [x] LOCAL — sección *Applications / Aplicaciones* implementada sobre el SSG.
 - [x] BUILD — `site/build_site.py` OK (20 páginas), `validate_site.py` 31/31,
       `wds` 20/20.
-- [x] COMMIT — commit `9556a25` en `main` local (feature + SSG + HTML
-      generado + estado WDS).
-- [ ] VPS — **actualizar `/opt/sites/arjuanfelipe/deploy.sh`** para que
-      sincronice el árbol completo (hoy sólo publica `index.html`) y revisar
-      `try_files` en el vhost. Requiere SSH del owner.
-- [ ] PUSH — `git push origin main` **sólo después** del paso anterior. El
-      push dispara el deploy a producción automáticamente.
-- [ ] VERIFICAR EN VIVO — `/applications/` y `/es/applications/` resuelven;
-      GitHub/LinkedIn/Work/Lab/CV/tema/idioma intactos en el sitio publicado.
-- [x] HTTPS / dominio — sin cambios; ya operativo.
+- [x] COMMIT — `9556a25` (feature + SSG + HTML generado + WDS) + `b4d7b20`
+      (docs) en `main`.
+- [x] VPS — `deploy.sh` reescrito para publicar el árbol completo; Nginx sin
+      cambios.
+- [x] PUSH — `git push origin main` hecho; CI `deploy.yml` verde (run
+      33340523614).
+- [x] VERIFICADO EN VIVO (2026-08-30) — `https://arjuanfelipe.com/`,
+      `/applications/`, `/es/applications/`, `/work/`, `/cv/`,
+      `/assets/applications/*.svg`, favicon → 200; `/nonexistent/` → 404;
+      nav con "Applications"/"Aplicaciones"; GitHub/LinkedIn/tema/idioma
+      intactos.
+- [x] HTTPS / dominio — sin cambios; operativo.
 
-**No está "en producción".** El commit local está listo; el push queda
-pendiente de que `deploy.sh` en el VPS sepa publicar el sitio multipágina.
+**En producción.** Para cambios futuros: editar `site/content|core`, rebuild,
+commit del HTML regenerado, `git push` → CI despliega.
