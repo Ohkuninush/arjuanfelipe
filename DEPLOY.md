@@ -42,34 +42,44 @@ python site/devserver.py 8123   # http://localhost:8123  (sin caché)
 `.github/workflows/deploy.yml`: cada push a `main` que toque rutas del sitio
 abre SSH al VPS con una clave dedicada cuyo `authorized_keys` fuerza
 `command="/opt/sites/arjuanfelipe/deploy.sh"`. Esa clave **no puede ejecutar
-nada más**. `deploy.sh` (vive en el VPS, no en el repo) hace `git fetch` +
-`git reset --hard origin/main` y publica en el webroot de Nginx.
+nada más**.
 
 - Host VPS: `158.69.213.49` (usuario `ubuntu`), host key fijado en el workflow.
-- Secret requerido: `VPS_DEPLOY_KEY` (clave privada ed25519 `arjuanfelipe_ci`).
-- No toca Nginx, DNS, TLS ni otras apps del VPS.
-- Rollback de emergencia: revertir DNS en Cloudflare a Vercel
-  (A apex `76.76.21.21`, CNAME www `cname.vercel-dns.com`).
+- Secret requerido: `VPS_DEPLOY_KEY` (clave privada ed25519).
+- Webroot de Nginx: `/opt/sites/arjuanfelipe/webroot/`. Cloudflare (proxied,
+  Full strict) → VPS. Vhost `/etc/nginx/sites-available/arjuanfelipe.conf`
+  con guard `if ($is_cloudflare = 0) { return 403; }`.
+- CI verificado operativo el 2026-08-30.
 
-### ⚠️ Pendiente de verificar en el VPS antes de confiar el multipágina
+### 🚫 BLOQUEANTE: `deploy.sh` sólo publica `index.html`
 
-El comentario de `deploy.yml` dice que `deploy.sh` "publica **index.html** en
-el webroot". Hasta hoy el sitio en producción era **un solo `index.html`**. El
-sitio multipágina (subdirectorios + `/assets/`) **nunca se ha desplegado**.
-Antes del primer push que lo incluya, confirmar por SSH en el VPS:
+`/opt/sites/arjuanfelipe/deploy.sh` hace `git fetch` + `reset --hard
+origin/main` y **publica sólo `index.html`** de forma atómica en el webroot.
+Los subdirectorios (`/applications/`, `/work/`, `/lab/`, `/cv/`, `/es/`) y
+`/assets/` **no se copian**.
 
-1. `cat /opt/sites/arjuanfelipe/deploy.sh` — ¿copia sólo `index.html`, o
-   sincroniza todo el árbol / apunta el webroot al checkout de git?
-2. `ls -la` del webroot de Nginx para `arjuanfelipe.com` (¿es el checkout de
-   git, o un directorio aparte al que `deploy.sh` copia archivos?).
-3. `cat` del `server {}` de Nginx del sitio: `root`, `index`,
-   `try_files $uri $uri/ =404;` (necesario para que `/applications/` resuelva
-   a `/applications/index.html`).
-4. Que el usuario del deploy pueda escribir el webroot y recargar Nginx sin
-   pisar otras apps (`/opt/sites/*` es multi-proyecto).
+Si se hace `git push origin main` con este commit tal cual:
+- el nuevo `index.html` (nav con enlaces a `/work/`, `/applications/`, …) se
+  publica, pero **esos enlaces darían 404** — el sitio queda roto.
 
-Si `deploy.sh` sólo copia `index.html`: hay que ampliarlo (o cambiar el
-webroot al checkout) **en el VPS**, no en este repo.
+**Antes de pushear hay que actualizar `deploy.sh` en el VPS** para que
+sincronice el árbol completo al webroot, p.ej.:
+
+```sh
+# dentro de deploy.sh, tras el reset --hard origin/main, en el repo espejo:
+rsync -a --delete \
+  --exclude '.git' --exclude 'site' --exclude 'wds' --exclude 'identity/core' \
+  --exclude '__pycache__' --exclude '*.md' --exclude '*.zip' \
+  "$REPO_DIR"/ /opt/sites/arjuanfelipe/webroot/
+nginx -t && systemctl reload nginx   # sólo si el vhost cambia; normal: no hace falta
+```
+
+(Ajustar a cómo esté escrito hoy `deploy.sh` — publicación atómica vía symlink
+swap, permisos, etc. No tocar Nginx/DNS/TLS ni otras apps de `/opt/sites/*`.)
+
+Comprobar también en el vhost:
+`try_files $uri $uri/ $uri/index.html =404;` — necesario para que
+`/applications/` resuelva a `/applications/index.html`.
 
 ---
 
@@ -93,12 +103,16 @@ webroot al checkout) **en el VPS**, no en este repo.
 - [x] LOCAL — sección *Applications / Aplicaciones* implementada sobre el SSG.
 - [x] BUILD — `site/build_site.py` OK (20 páginas), `validate_site.py` 31/31,
       `wds` 20/20.
-- [ ] Commit + push a `main` — **no ejecutado automáticamente** (el push
-      dispara el deploy a producción).
-- [ ] VPS — `deploy.sh` / webroot / Nginx `try_files` **sin verificar** (sin
-      acceso SSH desde aquí). Ver checklist arriba.
-- [ ] HTTPS / dominio — sin cambios; ya operativo.
+- [x] COMMIT — commit `9556a25` en `main` local (feature + SSG + HTML
+      generado + estado WDS).
+- [ ] VPS — **actualizar `/opt/sites/arjuanfelipe/deploy.sh`** para que
+      sincronice el árbol completo (hoy sólo publica `index.html`) y revisar
+      `try_files` en el vhost. Requiere SSH del owner.
+- [ ] PUSH — `git push origin main` **sólo después** del paso anterior. El
+      push dispara el deploy a producción automáticamente.
+- [ ] VERIFICAR EN VIVO — `/applications/` y `/es/applications/` resuelven;
+      GitHub/LinkedIn/Work/Lab/CV/tema/idioma intactos en el sitio publicado.
+- [x] HTTPS / dominio — sin cambios; ya operativo.
 
-**No está "en producción".** Falta: (1) verificar el VPS, (2) `git push
-origin main`, (3) comprobar que `/applications/` y `/es/applications/`
-resuelven y que GitHub/LinkedIn/Work/Lab/CV siguen intactos en el sitio vivo.
+**No está "en producción".** El commit local está listo; el push queda
+pendiente de que `deploy.sh` en el VPS sepa publicar el sitio multipágina.
