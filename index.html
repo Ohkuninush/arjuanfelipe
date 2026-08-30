@@ -1,217 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Juan Felipe — I build, test &amp; explore with data.</title>
-<meta name="description" content="Juan Felipe works across analytics, data engineering, QA data, and code. The domain came first — the website is catching up.">
+<title>Juan Felipe — arjuanfelipe.com</title>
+<meta name="description" content="Juan Felipe works across data, QA testing and engineering — analyzing systems, finding what doesn't fit, and building practical ways to make things better.">
 <link rel="canonical" href="https://arjuanfelipe.com/">
+<link rel="alternate" hreflang="en" href="https://arjuanfelipe.com/">
+<link rel="alternate" hreflang="es" href="https://arjuanfelipe.com/es/">
+<link rel="alternate" hreflang="x-default" href="https://arjuanfelipe.com/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Juan Felipe — I build, test &amp; explore with data.">
-<meta property="og:description" content="Juan Felipe works across analytics, data engineering, QA data, and code. The domain came first — the website is catching up.">
+<meta property="og:title" content="Juan Felipe — arjuanfelipe.com">
+<meta property="og:description" content="Juan Felipe works across data, QA testing and engineering — analyzing systems, finding what doesn't fit, and building practical ways to make things better.">
 <meta property="og:url" content="https://arjuanfelipe.com/">
+<meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Juan Felipe">
 <meta name="theme-color" content="#10141a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2310141a'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='13' fill='%23d3a35a' text-anchor='middle'%3EJF%3C/text%3E%3C/svg%3E">
-<style>
-  :root {
-    --bg: #10141a;
-    --bg-radial: #161c24;
-    --fg: #e7ebee;
-    --fg-secondary: #a7b0b9;
-    --fg-tertiary: #8b949c;
-    --fg-quiet: #828c96;
-    --accent: #ea6a1e;
-    --accent-hover: #ec8d55;
-    --border: rgba(234, 106, 30, 0.28);
-    --border-strong: rgba(234, 106, 30, 0.4);
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", monospace;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body { margin: 0; }
-
-  body {
-    background: radial-gradient(ellipse 90% 80% at 38% 40%, var(--bg-radial) 0%, var(--bg) 100%);
-    color: var(--fg);
-    font-family: var(--sans);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    min-height: 100vh;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(28px, 6vw, 64px) clamp(20px, 6vw, 48px);
-  }
-
-  .page {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    column-gap: clamp(16px, 3vw, 20px);
-  }
-
-  .badge {
-    grid-column: 1 / 5;
-    margin: 0 0 clamp(18px, 4svh, 22px);
-    font: 11px/1 var(--mono);
-    letter-spacing: 0.12em;
-    color: var(--accent);
-  }
-
-  .badge span {
-    display: inline-block;
-    border: 1px solid var(--border-strong);
-    padding: 3px 8px;
-    border-radius: 3px;
-  }
-
-  .name {
-    grid-column: 1 / 9;
-    margin: 0;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    font-size: clamp(30px, 4.4vw, 46px);
-    line-height: 1.1;
-  }
-
-  .tagline {
-    grid-column: 1 / 8;
-    margin: clamp(10px, 2svh, 14px) 0 0;
-    font-size: clamp(15px, 1.6vw, 18px);
-    color: var(--fg-secondary);
-    line-height: 1.5;
-  }
-
-  .meta {
-    grid-column: 9 / 13;
-    grid-row: 2 / 4;
-    align-self: end;
-    padding-left: 20px;
-    border-left: 1px solid var(--border);
-    color: var(--fg-tertiary);
-  }
-
-  .pipe {
-    list-style: none;
-    margin: 0 0 18px;
-    padding: 0;
-    font: 11px/1 var(--mono);
-    letter-spacing: 0.03em;
-    counter-reset: idx;
-  }
-
-  .pipe li {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 11px;
-    color: var(--fg-tertiary);
-    counter-increment: idx;
-  }
-
-  .pipe li::before {
-    content: counter(idx, decimal-leading-zero);
-    flex: 0 0 18px;
-    font-size: 9px;
-    color: var(--accent);
-    opacity: 0.85;
-  }
-
-  .msg {
-    font: 12.5px/1.5 var(--sans);
-    color: var(--fg-quiet);
-    margin: 0 0 18px;
-    max-width: 220px;
-  }
-
-  .links {
-    display: flex;
-    gap: 18px;
-    font: 12px/1 var(--mono);
-  }
-
-  .links a {
-    color: var(--accent);
-    text-decoration: none;
-    padding: 6px 2px;
-    border-radius: 2px;
-    transition: color 0.15s ease;
-  }
-
-  .links a:hover {
-    color: var(--accent-hover);
-  }
-
-  .links a:focus-visible {
-    outline: 2px solid var(--accent-hover);
-    outline-offset: 4px;
-  }
-
-  @media (max-width: 720px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-
-    .badge, .name, .tagline, .meta {
-      grid-column: 1 / -1;
-    }
-
-    .meta {
-      grid-row: auto;
-      align-self: auto;
-      margin-top: 28px;
-      padding-left: 0;
-      padding-top: 26px;
-      border-left: none;
-      border-top: 1px solid var(--border);
-    }
-
-    .msg {
-      max-width: 100%;
-    }
-
-    .links a {
-      padding: 14px 6px;
-      line-height: 1.4;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .links a {
-      transition: none;
-    }
-  }
-</style>
+<link rel="icon" href="/identity/dist/favicon/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/identity/dist/favicon/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/identity/dist/apple/apple-touch-icon.png">
+<link rel="mask-icon" href="/identity/dist/mask-icon.svg" color="#ea6a1e">
+<link rel="manifest" href="/identity/dist/site.webmanifest">
+<script>(()=>{try{var t=localStorage.getItem("arjuanfelipe:theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/site.css?v=4ee897586f">
+<script src="/assets/site.js?v=4ee897586f" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Person", "name": "Juan Felipe Ayllón Ramírez", "url": "https://arjuanfelipe.com/", "email": "mailto:arjuanfelipe@icloud.com", "sameAs": ["https://github.com/Ohkuninush", "https://www.linkedin.com/in/juan-ayllon-ramirez-77bab8ab/"]}, {"@type": "WebSite", "name": "Juan Felipe", "url": "https://arjuanfelipe.com/"}]}</script>
 </head>
 <body>
-<!-- QA check: schema valid, 0 nulls, 1 source of truth. shipped. -->
-<main class="page">
-  <div class="grid">
-    <p class="badge"><span>v0.1</span></p>
-    <h1 class="name">Juan Felipe</h1>
-    <p class="tagline">I build, test &amp; explore with data.</p>
-    <div class="meta">
-      <ul class="pipe">
-        <li>Analytics</li>
-        <li>Data Engineering</li>
-        <li>QA Data</li>
-        <li>Code</li>
-      </ul>
-      <p class="msg">The domain came first. The website is catching up.</p>
-      <nav class="links" aria-label="Profiles">
-        <a href="https://github.com/Ohkuninush" target="_blank" rel="noopener noreferrer">→ GitHub</a>
-        <a href="https://www.linkedin.com/in/juan-ayllon-ramirez-77bab8ab/" target="_blank" rel="noopener noreferrer">→ LinkedIn</a>
+<a class="wds-skip-link" href="#main">Skip to content</a>
+<header class="wds-header"><div class="wds-container wds-header__inner">
+  <a class="wds-mark" href="/"><svg class="wds-glyph" viewBox="0 0 149.31 1000.0" width="15" height="100" aria-hidden="true" focusable="false"><path d="M149.31 38.655 C119.448 38.655 74.655 41.655 74.655 68.655 L74.655 931.345 C74.655 958.345 29.862 961.345 0 961.345" stroke-width="77.31"/></svg><strong>Juan Felipe</strong></a>
+  <div class="site-nav-group">
+    <nav class="wds-nav" aria-label="Primary">
+      <a href="/work/">Work</a><a href="/lab/">Lab</a><a href="/cv/">CV</a><a href="/applications/">Applications</a>
+    </nav>
+    <details class="wds-nav-toggle">
+      <summary aria-label="Menu">Menu</summary>
+      <nav class="wds-nav" aria-label="Primary (mobile)">
+        <a href="/work/">Work</a><a href="/lab/">Lab</a><a href="/cv/">CV</a><a href="/applications/">Applications</a>
       </nav>
-    </div>
+    </details>
+    <div class="site-switch site-lang-switch"><span aria-current="true">EN</span><a href="/es/" data-language-switch hreflang="es" lang="es">ES<span class="wds-visually-hidden"> (Español)</span></a></div><div class="site-switch site-theme-switch" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="false"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.4 4.4l1.6 1.6M18 18l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.4 19.6l1.6-1.6M18 6l1.6-1.6"/></svg><span class="wds-visually-hidden">Light</span></button><button type="button" data-theme-set="dark" aria-pressed="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.4 14.5A8.6 8.6 0 0 1 9.5 3.6a8.6 8.6 0 1 0 10.9 10.9Z"/></svg><span class="wds-visually-hidden">Dark</span></button></div>
   </div>
-</main>
+</div></header>
+<main id="main"><section class="site-hero"><div class="wds-container">
+  <h1 class="site-hero__name">Juan Felipe</h1>
+</div></section>
+<section id="about" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">ABOUT</h2><div class="wds-reading"><p>I like understanding how things work.</p><p>I work at the intersection of data, quality and engineering, making sure information can be trusted before it turns into a decision. I analyze systems, validate data, automate checks and build tools that surface problems before they ever reach production.</p><p>What drives me most are the problems without an obvious answer. I enjoy following the evidence, questioning assumptions and digging until I find the cause of a problem rather than its symptoms. Understanding why has always been worth more to me than correcting the result.</p><p>That curiosity shapes the way I work and the way I learn. Sometimes it ends in a project and sometimes in an experiment, but it always ends with a question answered.</p></div></div></section>
+<section id="what-i-do" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">WHAT I DO</h2><div class="site-pillars"><div><h3 class="site-pillar__title">Data</h3><p class="site-pillar__body">I work with data from where it originates to where it is consumed. First I understand what it represents, how it relates, and which business rules govern it. From there I validate its quality, reshape it where needed, and build processes that hold consistency, traceability and trust at every stage.</p></div><div><h3 class="site-pillar__title">QA / Testing</h3><p class="site-pillar__body">I look for problems before they turn into incidents. I design and run tests, validate business rules and investigate anomalies until I reach their root cause. Wherever possible I automate the checks, so errors surface early and less risk reaches production.</p></div><div><h3 class="site-pillar__title">Engineering / Code</h3><p class="site-pillar__body">I use engineering to turn complex processes into simple, maintainable solutions. I build tools, automations and applications that solve real problems, favoring clarity, scalability and ease of maintenance over unnecessary complexity.</p></div></div></div></section>
+<section id="technologies" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">TECH STACK</h2><div class="site-tech"><div><h3 class="site-tech__group-title">Engineering</h3><ul class="site-tech__list"><li>Databricks</li><li>SQL</li><li>Oracle</li><li>BigQuery</li></ul></div><div><h3 class="site-tech__group-title">Quality & Testing</h3><ul class="site-tech__list"><li>Jira</li><li>Xray</li><li>Postman</li></ul></div><div><h3 class="site-tech__group-title">Analytics & BI</h3><ul class="site-tech__list"><li>Power BI</li><li>Tableau</li><li>QlikView</li><li>Excel</li></ul></div><div><h3 class="site-tech__group-title">Development</h3><ul class="site-tech__list"><li>Python</li><li>Java</li><li>GitHub</li></ul></div></div></div></section>
+<section id="selected-work" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">SELECTED WORK</h2><ol class="site-editorial"><li><article><h3 class="site-editorial__title"><a href="/work/data-migration-validation/">Data Migration Validation</a></h3><p class="site-editorial__meta">Data · Quality</p><p class="site-editorial__body">I worked on validating large-scale data migration processes, making sure information kept its integrity between source and target systems. My work centered on data reconciliation, business-rule validation and automating quality controls to catch inconsistencies before release.</p></article></li><li><article><h3 class="site-editorial__title"><a href="/work/julymelisa/">julymelisa.com</a></h3><p class="site-editorial__meta">Web · Engineering</p><p class="site-editorial__body">I designed and built a website from the ground up, bringing visual identity, user experience and web engineering together in a single project. Beyond the implementation, I worked on performance, responsive design, accessibility and an architecture meant to deliver a fast, consistent experience across devices.</p></article></li><li><article><h3 class="site-editorial__title"><a href="/work/qa-test-manager/">QA Test Manager</a></h3><p class="site-editorial__meta">Java · QA</p><p class="site-editorial__body">I built a desktop application to manage the software testing lifecycle, covering projects, test cases, defects and reporting. The project combined software design, data persistence and quality principles, letting me build and validate the same system from both a developer's and a QA's perspective.</p></article></li></ol><p class="site-editorial__more"><a href="/work/">View all work &rarr;</a></p></div></section>
+<section id="from-the-lab" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">FROM THE LAB</h2><div class="wds-reading"><p>This is where I explore ideas, test hypotheses and build small experiments to understand how things work. Some of them grow into useful tools; others simply teach me something new.</p></div><ol class="site-editorial"><li><article><h3 class="site-editorial__title"><a href="/lab/speech-to-text/">Speech-to-Text</a></h3><p class="site-editorial__meta">AI · Python · Experiment</p><p class="site-editorial__body">I wanted to find out whether accurate transcription was possible without relying on cloud services. This experiment explores speech recognition models, local processing and the technical decisions involved in turning an AI capability into a tool that is practical for everyday use.</p></article></li><li><article><h3 class="site-editorial__title"><a href="/lab/water-loss-model/">Water-Loss Model</a></h3><p class="site-editorial__meta">Calculus · Mathematical Modeling · Visualization</p><p class="site-editorial__body">How much does the volume of a lagoon change when its water level drops? That question led me to build a mathematical model using integral calculus and 3D visualization, to analyze how small variations in height can translate into significant losses in volume.</p></article></li></ol><p class="site-editorial__more"><a href="/lab/">Explore the lab &rarr;</a></p></div></section>
+<section id="cv" class="wds-section"><div class="wds-container"><h2 class="site-eyebrow">CV</h2><div class="site-gate__body"><p>Experience across data quality, engineering and analytics, focused on migration validation, automated controls and building solutions that keep information reliable.</p><a class="site-gate__link" href="/cv/">View CV &rarr;</a></div></div></section>
+</main><a class="site-whatsapp" href="https://wa.me/51933127795?text=Hi%20Juan%20Felipe%2C%20I%20found%20you%20through%20arjuanfelipe.com." target="_blank" rel="noopener noreferrer" aria-label="Contact Juan Felipe on WhatsApp"><span class="site-whatsapp__inner"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.04 2a9.84 9.84 0 0 0-8.42 14.92L2 22l5.2-1.57A9.96 9.96 0 1 0 12.04 2Zm0 17.93a8.08 8.08 0 0 1-4.12-1.13l-.3-.18-3.08.93.95-3-.2-.31a7.93 7.93 0 1 1 6.75 3.69Zm4.43-5.94c-.24-.12-1.44-.7-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.19a7.27 7.27 0 0 1-1.34-1.65c-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/></svg><span class="site-whatsapp__label" aria-hidden="true">WhatsApp</span></span></a><footer class="wds-footer"><div class="wds-container site-footer">
+  <p class="site-footer__id">Juan Felipe Ayllón Ramírez &nbsp;&nbsp; &copy; 2026</p>
+  <ul class="site-footer__links"><li><a href="https://www.linkedin.com/in/juan-ayllon-ramirez-77bab8ab/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li><li><a href="https://github.com/Ohkuninush" target="_blank" rel="noopener noreferrer">GitHub</a></li></ul>
+</div></footer>
+
 </body>
 </html>

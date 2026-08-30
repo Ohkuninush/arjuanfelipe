@@ -197,6 +197,65 @@ definidos. Sin el test habrían llegado a producción sin avisar.
 
 ---
 
+## WDS-009 · La documentación es auto-contenida, no enlazada
+
+**Propósito.** Que la página sobreviva a que la muevan de carpeta.
+
+**Razón.** La página se emitía con `<link rel="stylesheet" href="../css/wds.css">`.
+Ese `href` solo resuelve desde el directorio para el que se escribió: al
+copiarla a `paleta_canonica/` apuntó a una ruta inexistente y **perdió todos
+los estilos en silencio** —CSS no lanza error por una hoja que no carga. El
+build ahora **incrusta** `wds.css` en la página. Sigue habiendo una sola
+fuente: se inyecta en build desde el mismo archivo generado, y el test T20
+comprueba que lo incrustado es `css/wds.css` literal, no una copia.
+
+Un único render se escribe en los dos destinos (`wds/docs/index.html` y
+`paleta_canonica/paleta_canonica.html`), los dos con hash en el manifiesto y
+verificados byte a byte por T18. Una copia hecha a mano ya se quedó obsoleta
+una vez; no se repite el mecanismo que falló.
+
+**Dependencias.** `css/wds.css` del mismo build.
+**Tokens.** Todos, incrustados.
+**Accesibilidad.** Directa: una página sin estilos pierde foco visible,
+objetivos táctiles y contraste a la vez.
+**Rendimiento.** 62 KB en un archivo, sin segunda petición. Para una página de
+documentación abierta desde disco, es la opción correcta; **no** es el patrón
+para páginas de producción, que deben cachear la hoja aparte.
+**Responsive.** Sin efecto.
+**Extensibilidad.** Un destino nuevo es una línea en `DOC_TARGETS`.
+
+---
+
+## WDS-010 · Lo que apareció al abrirla en un navegador
+
+**Propósito.** Cerrar el hueco declarado en las fases anteriores.
+
+**Razón.** Hasta ahora la validación era estructural. Al renderizar la página
+en Chromium aparecieron **tres defectos que ningún test de cálculo podía ver**,
+y ninguno era de color ni de contraste:
+
+| # | Defecto | Origen | Corrección |
+|---|---|---|---|
+| 1 | `<dialog open>` flotaba sobre la sección siguiente y la tapaba | `position: absolute` del UA stylesheet | la demo vuelve al flujo; el componente conserva lo que `showModal()` necesita |
+| 2 | 322 px de desbordamiento horizontal a 375 px | rejillas de la doc de 34,5 rem y barras de 512 px | los swatches reflowean; la escala de espaciado hace scroll en su propia caja |
+| 3 | el menú móvil descuadraba la barra al abrirse | el `<details>` crecía dentro de la fila flex del header | el panel abierto pasa a `position:absolute` bajo la cabecera |
+
+El nº 3 era un defecto **del sistema**, no de la documentación: `.wds-nav-toggle`
+estaba roto en su propio breakpoint desde que se escribió.
+
+**Dependencias.** Ninguna nueva.
+**Tokens.** Sin cambios.
+**Accesibilidad.** Verificado en render real, ya no por construcción: anillo de
+foco dibujado en `#ff8444` a 2 px, enlace de salto que aparece al tabular,
+tooltip que responde a `:focus-within`, y 44 px de alto en cada enlace del menú
+móvil. Los 33 elementos enfocables tienen nombre accesible.
+**Rendimiento.** Sin efecto.
+**Responsive.** Es el asunto: 320, 375 y desktop sin desbordamiento del body.
+**Extensibilidad.** T16 impide que un componente vuelva a quedar sin mostrar,
+que es lo que mantenía estos fallos fuera de la vista.
+
+---
+
 ## Inventario de páginas soportado
 
 Home, About, Projects, Research, Writing, Experiments, Notes, Uses, Resume,
@@ -212,11 +271,17 @@ requeriría JavaScript (ver WDS-003).
 
 Igual que en las fases anteriores, esto se declara en vez de darse por hecho:
 
-- **No he abierto esta hoja de estilos en ningún navegador.** No tengo Chrome,
-  Firefox, Safari ni Edge. La validación es estructural —integridad referencial,
-  contraste por cálculo, parseo— no visual.
+- **Solo se ha probado en Chromium.** La página se abrió y se recorrió en un
+  navegador real (ver WDS-010), pero en uno. **Firefox y Safari siguen sin
+  probarse**, y son justo donde `color-mix()`, `text-wrap: pretty` y el
+  posicionamiento de `<dialog>` tienen más probabilidad de divergir.
 - **No he probado con lector de pantalla.** La semántica es correcta por
-  construcción (elementos nativos, ARIA donde toca), pero nadie lo ha escuchado.
-- **No hay pruebas de regresión visual.** Requieren un motor de render.
-- **`color-mix()` y `text-wrap: pretty`** son razonablemente recientes; degradan
-  con elegancia, pero no lo he comprobado en un navegador antiguo real.
+  construcción y los 33 elementos enfocables tienen nombre accesible, pero
+  nadie lo ha escuchado. Un nombre accesible correcto no garantiza que el
+  anuncio sea comprensible.
+- **No hay pruebas de regresión visual automatizadas.** La verificación de
+  WDS-010 fue manual: cierra el hueco de hoy, no impide el de mañana. Ningún
+  test del suite detecta un desbordamiento horizontal —eso requiere un motor de
+  render dentro del build, que no existe aquí.
+- **No se ha probado en un navegador antiguo real.** `color-mix()` y
+  `text-wrap: pretty` degradan con elegancia sobre el papel; no lo he visto.

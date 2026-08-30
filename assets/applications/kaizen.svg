@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="KAIZEN">
+  <rect width="1200" height="600" fill="#10141a"/>
+  <g stroke="#272c32" stroke-width="1">
+    <path d="M0 150H1200M0 300H1200M0 450H1200"/>
+    <path d="M200 0V600M400 0V600M600 0V600M800 0V600M1000 0V600"/>
+  </g>
+  <polyline points="80,360 240,360 320,240 440,300 560,160 700,320 840,220 980,280 1120,200"
+    fill="none" stroke="#ea6a1e" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="#181c22" stroke="#5d6269" stroke-width="1.5">
+    <circle cx="240" cy="360" r="9"/><circle cx="560" cy="160" r="9"/>
+    <circle cx="840" cy="220" r="9"/><circle cx="1120" cy="200" r="9"/>
+  </g>
+  <text x="80" y="150" fill="#e7ebee" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="88" font-weight="700" letter-spacing="10">KAIZEN</text>
+  <text x="84" y="200" fill="#909396" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="22" letter-spacing="6">INFRASTRUCTURE INTELLIGENCE</text>
+</svg>

@@ -157,6 +157,55 @@ def main():
        sep["degrees"] > 0,
        f"{sep['degrees']:.1f} deg between {sep['between'][0]} and {sep['between'][1]}")
 
+    # ---- the generated documentation --------------------------------------
+    from build_wds import DOC_TARGETS
+    pages = {}
+    for t in DOC_TARGETS:
+        with open(t, encoding="utf-8") as f:
+            pages[os.path.relpath(t, HERE).replace(os.sep, "/")] = f.read()
+    page = next(iter(pages.values()))
+
+    # ---- T16: component coverage ------------------------------------------
+    # A component that exists in the stylesheet but appears nowhere is
+    # undocumented by accident, not by choice. The build decides, not memory.
+    declared = set(re.findall(r"\.(wds-[a-z0-9_-]+)", all_css))
+    shown = set()
+    for attr in re.findall(r'class="([^"]*)"', page):
+        shown.update(attr.split())
+    undocumented = sorted(declared - shown)
+    ck("T16 every component in the stylesheet appears in the documentation",
+       not undocumented,
+       f"{len(declared & shown)}/{len(declared)} classes shown"
+       + (f" | MISSING: {undocumented}" if undocumented else ""))
+
+    # ---- T17: the page does not depend on an external stylesheet ----------
+    # A relative <link href> only resolves from the directory the page was
+    # written for. Moving the file then silently strips every style, which is
+    # exactly how the previous copy broke.
+    linked = [p for p, t in pages.items()
+              if re.search(r'<link[^>]+rel=["\']stylesheet', t)]
+    ck("T17 the documentation is self-contained, not linked", not linked,
+       f"{len(pages)} pages inline their css"
+       + (f" | LINKED: {linked}" if linked else ""))
+
+    # ---- T18: one render, several destinations ----------------------------
+    ck("T18 every documentation target is byte-identical",
+       len(set(pages.values())) == 1,
+       " = ".join(sorted(pages)))
+
+    # ---- T19: referential integrity inside the page ------------------------
+    used_html = set(re.findall(r"var\((--wds-[a-z0-9-]+)", page))
+    missing_html = sorted(used_html - defined)
+    ck("T19 every token referenced by the page is defined", not missing_html,
+       f"{len(used_html)} referenced"
+       + (f" | MISSING: {missing_html}" if missing_html else ""))
+
+    # ---- T20: the inlined css is the real one ------------------------------
+    with open(os.path.join(CSS, "wds.css"), encoding="utf-8") as f:
+        entry = f.read()
+    ck("T20 the inlined stylesheet is css/wds.css verbatim", entry in page,
+       f"{len(entry.encode('utf-8'))} B inlined, not a private copy")
+
     print("=" * 72)
     print(f"{len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:

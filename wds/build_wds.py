@@ -19,9 +19,18 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core.derive import load_tokens, derive, validate
 from core.css import emit_tokens, emit_base, emit_components, type_scale
-from core.colour import contrast, rgb_to_oklch, hex_to_rgb
+from core.docs import build_docs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+# The living documentation is emitted to both locations from one render, so the
+# two can never drift. The second is outside the package on purpose: it is where
+# the page is read from, and a hand-made copy there has already gone stale once.
+DOC_TARGETS = [
+    os.path.join(HERE, "docs", "index.html"),
+    os.path.join(os.path.dirname(HERE), "paleta_canonica",
+                 "paleta_canonica.html"),
+]
 
 
 def resolve_cds():
@@ -115,13 +124,17 @@ def main():
         print(f"    {name:<10} {mn:6.1f}px -> {mx:6.1f}px")
 
     # ---- docs -------------------------------------------------------------
-    docs = build_docs(tok, col, cds, rows)
-    docs_dir = os.path.join(HERE, "docs")
-    os.makedirs(docs_dir, exist_ok=True)
-    with open(os.path.join(docs_dir, "index.html"), "w",
-              encoding="utf-8", newline="\n") as f:
-        f.write(docs)
-    print(f"\n  docs/index.html      {len(docs.encode('utf-8')):>6} B")
+    # The stylesheet is inlined rather than linked: a relative href only
+    # resolves from the directory it was written for, so a linked page loses
+    # every style the moment it is moved. One render, two destinations.
+    docs = build_docs(tok, col, cds, rows, files["wds.css"])
+    print(f"\n  docs rendered        {len(docs.encode('utf-8')):>6} B "
+          f"(self-contained: css inlined)")
+    for target in DOC_TARGETS:
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, "w", encoding="utf-8", newline="\n") as f:
+            f.write(docs)
+        print(f"    {os.path.relpath(target, HERE)}")
 
     # ---- token export for tooling ----------------------------------------
     export = {"wds_version": tok["wds_version"],
@@ -143,10 +156,12 @@ def main():
             "sha256": hashlib.sha256(raw).hexdigest(),
         }
     docs_raw = docs.encode("utf-8")
-    manifest["docs/index.html"] = {
-        "bytes": len(docs_raw),
-        "sha256": hashlib.sha256(docs_raw).hexdigest(),
-    }
+    for target in DOC_TARGETS:
+        key = os.path.relpath(target, HERE).replace(os.sep, "/")
+        manifest[key] = {
+            "bytes": len(docs_raw),
+            "sha256": hashlib.sha256(docs_raw).hexdigest(),
+        }
     release = {
         "wds_version": tok["wds_version"],
         "consumes_cds_version": cds["cds_version"],
@@ -168,251 +183,6 @@ def main():
     print(f"  release digest: {release['release_digest']}")
     print("=" * 74)
     return 0
-
-
-# --------------------------------------------------------------------- docs
-
-def build_docs(tok, col, cds, rows):
-    d = cds["path"]["d"]
-    vb = f"0 0 {cds['bounding_box']['width']} {cds['bounding_box']['height']}"
-    sw = cds["parameters"]["stroke_width"]
-    glyph = (f'<svg class="wds-glyph" viewBox="{vb}" aria-hidden="true">'
-             f'<path d="{d}" stroke-width="{sw}"/></svg>')
-
-    def swatches(theme):
-        out = []
-        for k, v in col[theme].items():
-            if k.endswith("-surface") or k in ("selection", "code-bg",
-                                               "scrollbar-thumb",
-                                               "scrollbar-track"):
-                continue
-            c = contrast(v, col[theme]["bg"])
-            L, C, H = rgb_to_oklch(hex_to_rgb(v))
-            out.append(
-                f'<div class="sw"><span class="sw__chip" style="background:{v}">'
-                f'</span><code>--wds-{k}</code><span class="sw__hex">{v}</span>'
-                f'<span class="sw__num">L {L:.3f}</span>'
-                f'<span class="sw__num">H {H:5.1f}</span>'
-                f'<span class="sw__num">{c:5.2f}:1</span></div>')
-        return "".join(out)
-
-    type_rows = "".join(
-        f'<tr><td><code>--wds-text-{n}</code></td>'
-        f'<td class="num">{mn:.1f}px</td><td class="num">{mx:.1f}px</td>'
-        f'<td style="font-size:var(--wds-text-{n});line-height:1.2">'
-        f'Now {glyph} understand.</td></tr>'
-        for n, mn, mx, _ in type_scale(tok))
-
-    contrast_rows = "".join(
-        f'<tr><td>{r["theme"]}</td><td><code>{r["fg"]}</code></td>'
-        f'<td><code>{r["bg"]}</code></td><td class="num">{r["ratio"]:.2f}</td>'
-        f'<td class="num">{r["target"]}</td><td>{r["level"]}</td></tr>'
-        for r in rows)
-
-    space_rows = "".join(
-        f'<div class="sp"><span class="sp__bar" style="width:{s*tok["spacing"]["unit_px"]}px">'
-        f'</span><code>--wds-space-{s}</code>'
-        f'<span class="sw__num">{s*tok["spacing"]["unit_px"]}px</span></div>'
-        for s in tok["spacing"]["steps"] if s)
-
-    return f"""<!DOCTYPE html>
-<html lang="es" data-theme="dark">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WDS — arjuanfelipe</title>
-<link rel="stylesheet" href="../css/wds.css">
-<style>
-  .doc {{ max-width: var(--wds-container); margin-inline: auto; padding: var(--wds-space-12) var(--wds-margin) var(--wds-space-24); }}
-  .doc section {{ padding-block: var(--wds-space-14); border-top: 1px solid var(--wds-border-subtle); }}
-  .doc section:first-of-type {{ border-top: 0; }}
-  .eyebrow {{ font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); letter-spacing: var(--wds-tracking-caps); color: var(--wds-accent); margin-bottom: var(--wds-space-4); }}
-  .sw {{ display: grid; grid-template-columns: 2.5rem 15rem 6rem 5.5rem 5.5rem auto; gap: var(--wds-space-3); align-items: center; padding: var(--wds-space-2) 0; border-bottom: 1px solid var(--wds-border-subtle); font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); }}
-  .sw__chip {{ width: 2.5rem; height: 1.5rem; border-radius: var(--wds-radius-sm); border: 1px solid var(--wds-border); display: block; }}
-  .sw__hex, .sw__num {{ color: var(--wds-fg-tertiary); }}
-  .num {{ text-align: right; font-variant-numeric: tabular-nums; }}
-  .sp {{ display: grid; grid-template-columns: 8rem 12rem auto; gap: var(--wds-space-4); align-items: center; padding: var(--wds-space-1) 0; font-family: var(--wds-font-mono); font-size: var(--wds-text-caption); }}
-  .sp__bar {{ height: 10px; background: var(--wds-accent); border-radius: 2px; display: block; }}
-  .demo {{ display: flex; flex-wrap: wrap; gap: var(--wds-space-4); align-items: center; margin-block: var(--wds-space-5); }}
-  .grid-demo > div {{ background: var(--wds-surface); border: 1px solid var(--wds-border-subtle); padding: var(--wds-space-2); text-align: center; font-family: var(--wds-font-mono); font-size: 11px; color: var(--wds-fg-tertiary); border-radius: var(--wds-radius-sm); }}
-  .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem,1fr)); gap: var(--wds-space-5); }}
-</style>
-</head>
-<body>
-<a class="wds-skip-link" href="#main">Saltar al contenido</a>
-
-<header class="wds-header"><div class="wds-container wds-header__inner">
-  <span class="wds-mark">{glyph}<strong>arjuanfelipe</strong></span>
-  <nav class="wds-nav" aria-label="Documentación">
-    <a href="#color" aria-current="page">Color</a><a href="#type">Tipografía</a>
-    <a href="#space">Espacio</a><a href="#components">Componentes</a>
-    <a href="#a11y">Accesibilidad</a>
-  </nav>
-</div></header>
-
-<main id="main" class="doc">
-
-<section>
-  <p class="eyebrow">WEBSITE DESIGN SYSTEM · v{tok['wds_version']}</p>
-  <h1 class="wds-hero__title">Now {glyph} understand.</h1>
-  <p class="wds-hero__lead">El lenguaje operativo con el que la identidad se
-    comunica. Consume el CDS {cds['cds_version']}; no lo modifica.</p>
-  <div class="demo">
-    <span class="wds-badge">CERO JS</span>
-    <span class="wds-badge">DARK-FIRST</span>
-    <span class="wds-badge wds-badge--success">{len(rows)}/{len(rows)} CONTRASTE</span>
-    <span class="wds-badge wds-badge--info">CDS {cds['path']['sha256'][:8]}</span>
-  </div>
-</section>
-
-<section id="color">
-  <p class="eyebrow">01 — COLOR</p>
-  <h2>Todo deriva de la paleta canónica.</h2>
-  <p>Los colores semánticos son el accent canónico rotado en matiz dentro de
-    OKLCH, manteniendo luminancia y croma. Por eso el contraste es constante
-    por construcción, no por ajuste.</p>
-  <div class="demo">
-    <span class="wds-badge wds-badge--success">SUCCESS</span>
-    <span class="wds-badge wds-badge--warning">WARNING</span>
-    <span class="wds-badge wds-badge--danger">DANGER</span>
-    <span class="wds-badge wds-badge--info">INFO</span>
-  </div>
-  <div class="wds-callout wds-callout--warning">
-    <span class="wds-callout__label">Límite</span>
-    <div><strong>danger</strong> queda a solo
-      {col['meta']['min_hue_separation']['degrees']:.1f}° de <strong>primary</strong>.
-      Con un accent naranja, un rojo de peligro no puede separarse más sin salir
-      de la familia. Nunca deben aparecer adyacentes sin etiqueta de texto.</div>
-  </div>
-  <h3>Tokens (dark)</h3>
-  {swatches('dark')}
-</section>
-
-<section id="type">
-  <p class="eyebrow">02 — TIPOGRAFÍA</p>
-  <h2>Escala modular {tok['type_scale']['ratio']}, fluida entre {tok['type_scale']['fluid_viewport_min_px']} y {tok['type_scale']['fluid_viewport_max_px']} px.</h2>
-  <p>El cuerpo de texto no encoge en móvil; solo los títulos comprimen, y cuanto
-    más grandes, más comprimen.</p>
-  <div class="wds-table-wrap"><table class="wds-table">
-    <thead><tr><th>token</th><th class="num">mín</th><th class="num">máx</th><th>muestra</th></tr></thead>
-    <tbody>{type_rows}</tbody>
-  </table></div>
-</section>
-
-<section id="space">
-  <p class="eyebrow">03 — ESPACIO Y REJILLA</p>
-  <h2>Base 4. Ningún valor arbitrario.</h2>
-  {space_rows}
-  <h3>Rejilla de {tok['grid']['columns']} columnas</h3>
-  <div class="wds-grid grid-demo">{''.join('<div>' + str(i+1) + '</div>' for i in range(12))}</div>
-  <p class="wds-caption">En móvil colapsa a 4 columnas. Ancho de lectura
-    limitado a {tok['grid']['reading_max_ch']}ch; bloques de código a
-    {tok['grid']['code_max_ch']}ch.</p>
-</section>
-
-<section id="components">
-  <p class="eyebrow">04 — COMPONENTES</p>
-  <h2>Construidos sobre HTML nativo.</h2>
-
-  <h3>Botones</h3>
-  <div class="demo">
-    <button class="wds-btn wds-btn--primary">Primario</button>
-    <button class="wds-btn wds-btn--secondary">Secundario</button>
-    <button class="wds-btn wds-btn--ghost">Fantasma</button>
-    <button class="wds-btn wds-btn--danger">Peligro</button>
-    <button class="wds-btn wds-btn--secondary" disabled>Desactivado</button>
-  </div>
-
-  <h3>Tarjetas</h3>
-  <div class="cards">
-    <article class="wds-card wds-card--interactive">
-      <p class="wds-card__meta">PROYECTO · 2026</p>
-      <h4 class="wds-card__title">Identity Production System</h4>
-      <p>110 activos generados desde una especificación de 5 números.</p>
-    </article>
-    <article class="wds-card wds-card--interactive">
-      <p class="wds-card__meta">NOTA</p>
-      <h4 class="wds-card__title">Sobre la simetría rotacional</h4>
-      <p>Una I normal es simétrica por espejo. Ésta lo es por rotación.</p>
-    </article>
-  </div>
-
-  <h3>Avisos</h3>
-  <div class="wds-stack">
-    <div class="wds-callout wds-callout--info"><span class="wds-callout__label">Info</span><div>El sistema es dark-first; el tema claro se deriva del mismo motor.</div></div>
-    <div class="wds-callout wds-callout--danger"><span class="wds-callout__label">Peligro</span><div>Ningún componente introduce JavaScript sin justificarlo.</div></div>
-  </div>
-
-  <h3>Acordeón <span class="wds-badge">&lt;details&gt;</span></h3>
-  <details class="wds-accordion"><summary>¿Por qué cero JavaScript?</summary>
-    <div class="wds-accordion__body">Porque hasta ahora ninguna interacción lo
-      ha exigido. Acordeones, navegación móvil y diálogos existen como elementos
-      nativos, accesibles por teclado sin una línea de script.</div></details>
-  <details class="wds-accordion"><summary>¿Qué necesitaría JavaScript?</summary>
-    <div class="wds-accordion__body">Búsqueda, filtrado de listas, y
-      posicionamiento de tooltips en espacios estrechos. Están marcados como
-      tales y no se han falseado.</div></details>
-
-  <h3>Formularios</h3>
-  <div style="max-width:26rem">
-    <div class="wds-field">
-      <label class="wds-label" for="e">Correo</label>
-      <input class="wds-input" id="e" type="email" placeholder="tu@correo.com">
-      <span class="wds-help">Nunca se comparte.</span>
-    </div>
-    <div class="wds-field">
-      <label class="wds-label" for="x">Campo con error</label>
-      <input class="wds-input" id="x" aria-invalid="true" value="no válido">
-      <span class="wds-error">Este valor no es válido.</span>
-    </div>
-  </div>
-
-  <h3>Métricas</h3>
-  <div class="wds-metrics">
-    <div><div class="wds-metric__value">110</div><div class="wds-metric__label">ACTIVOS</div></div>
-    <div><div class="wds-metric__value">24/24</div><div class="wds-metric__label">REGRESIÓN</div></div>
-    <div><div class="wds-metric__value">0</div><div class="wds-metric__label">JAVASCRIPT</div></div>
-    <div><div class="wds-metric__value">5</div><div class="wds-metric__label">PARÁMETROS</div></div>
-  </div>
-
-  <h3>Línea de tiempo</h3>
-  <ul class="wds-timeline">
-    <li><strong>Fase IV</strong> — Canonical Design Specification congelada.</li>
-    <li><strong>Fase V</strong> — Identity Production System, 110 activos.</li>
-    <li><strong>Fase VI</strong> — Website Design System.</li>
-  </ul>
-
-  <h3>Estados</h3>
-  <div class="demo" style="align-items:stretch">
-    <div class="wds-empty" style="flex:1">Nada que mostrar todavía.</div>
-  </div>
-  <div class="wds-stack" style="max-width:22rem">
-    <div class="wds-skeleton" style="height:1rem"></div>
-    <div class="wds-skeleton" style="height:1rem;width:70%"></div>
-    <div class="wds-progress"><div class="wds-progress__bar" style="width:62%"></div></div>
-  </div>
-</section>
-
-<section id="a11y">
-  <p class="eyebrow">05 — ACCESIBILIDAD</p>
-  <h2>Cada par verificado por cálculo.</h2>
-  <p>Ningún color entra en el sistema por su aspecto. Todos los contratos de
-    contraste se resuelven en el build y detienen la compilación si fallan.</p>
-  <div class="wds-table-wrap"><table class="wds-table">
-    <thead><tr><th>tema</th><th>frente</th><th>fondo</th><th class="num">ratio</th><th class="num">mín</th><th>nivel</th></tr></thead>
-    <tbody>{contrast_rows}</tbody>
-  </table></div>
-</section>
-
-</main>
-
-<footer class="wds-footer"><div class="wds-container">
-  WDS v{tok['wds_version']} · consume CDS {cds['cds_version']} ·
-  glifo {cds['identity']['canonical_glyph']} · generado, no escrito a mano.
-</div></footer>
-</body>
-</html>
-"""
 
 
 if __name__ == "__main__":

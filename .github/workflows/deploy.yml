@@ -19,6 +19,13 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "assets/**"
+      - "applications/**"
+      - "work/**"
+      - "lab/**"
+      - "cv/**"
+      - "es/**"
+      - "identity/dist/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch: {}
 

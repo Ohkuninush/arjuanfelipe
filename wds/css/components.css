@@ -142,18 +142,42 @@
 .wds-nav a:hover, .wds-nav a[aria-current='page'] { color: var(--wds-fg); }
 .wds-nav a[aria-current='page'] { box-shadow: inset 0 -1px 0 var(--wds-accent); }
 
-/* Mobile nav without JavaScript: native <details> as a disclosure. */
+/* Mobile nav without JavaScript: native <details> as a disclosure.
+   The open panel is taken out of the header row and dropped below it. Left in
+   flow it grows inside the flex row and pushes the whole bar out of shape --
+   the header is position:sticky, so it already anchors the absolute panel. */
 .wds-nav-toggle { display: none; }
 @media (max-width: 719px) {
   .wds-nav { display: none; }
   .wds-nav-toggle { display: block; }
-  .wds-nav-toggle[open] .wds-nav { display: flex; flex-direction: column; }
   .wds-nav-toggle > summary {
     list-style: none; cursor: pointer;
     min-height: var(--wds-touch-target);
     display: flex; align-items: center;
+    font-size: var(--wds-text-caption);
+    letter-spacing: var(--wds-tracking-wide);
+    color: var(--wds-fg-secondary);
   }
+  .wds-nav-toggle[open] > summary { color: var(--wds-fg); }
   .wds-nav-toggle > summary::-webkit-details-marker { display: none; }
+  .wds-nav-toggle[open] .wds-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: var(--wds-space-2) var(--wds-margin) var(--wds-space-4);
+    background: var(--wds-bg);
+    border-bottom: var(--wds-border-hairline) solid var(--wds-border-subtle);
+  }
+  .wds-nav-toggle[open] .wds-nav a {
+    min-height: var(--wds-touch-target);
+    display: flex;
+    align-items: center;
+  }
 }
 
 /* --------------------------------------------------------------- hero -- */

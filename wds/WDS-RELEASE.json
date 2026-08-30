@@ -1,24 +1,28 @@
 {
   "artefacts": {
+    "../paleta_canonica/paleta_canonica.html": {
+      "bytes": 64074,
+      "sha256": "2e3f0e16c122eb43b51a43364d93838b7238f21ee77f31d1e8edf28f2c8dca61"
+    },
     "css/base.css": {
       "bytes": 2990,
       "sha256": "d4a3e855d3ef9837c4e5afe4660121bc4e6123aa1b83b5a4772b7868aeaa7c3d"
     },
     "css/components.css": {
-      "bytes": 15784,
-      "sha256": "a8aacc5ffe8342681e71d86a50f9e0304cf9afc0f539d35c3d7592cded1b5189"
+      "bytes": 16618,
+      "sha256": "ff1fb36b7a6d399e43b768c84af79856049855e851995b06bd287827a25e6c80"
     },
     "css/tokens.css": {
       "bytes": 9120,
       "sha256": "316c696dfd4cbf6548f592baa9dc53ecfcb6da6b5fd476857bc83a96b99d054b"
     },
     "css/wds.css": {
-      "bytes": 27944,
-      "sha256": "ca8d650eef2ca7a97552ce7f9b9b723cb71d9f1e5e95380e3aef77753bcca7c2"
+      "bytes": 28778,
+      "sha256": "22949ab4d9f119412502c3df2bf2eaaccab3ec50fdccc77c786e59ee8402637f"
     },
     "docs/index.html": {
-      "bytes": 25719,
-      "sha256": "ab18ebe79fb6ce9019cfcc2ecb186a9507c8044715e9a0249b8f0a6622ffbda1"
+      "bytes": 64074,
+      "sha256": "2e3f0e16c122eb43b51a43364d93838b7238f21ee77f31d1e8edf28f2c8dca61"
     }
   },
   "consumes_cds_version": "1.0.0",
@@ -28,6 +32,6 @@
     "checked": 32,
     "met": 32
   },
-  "release_digest": "ee3a5813771e1266a5a2b907fb2eafafe9df266cdd18c57d633701c65f915d7a",
+  "release_digest": "e42b2e49232120bfd90d6a373270d5ba881cd3335fd0248513e7c08c2056a12a",
   "wds_version": "1.0.0"
 }
