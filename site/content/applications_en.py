@@ -49,13 +49,26 @@ APPLICATIONS = [
             "second verification factor."
         ),
     },
+    {
+        "slug": "wom",
+        "name": "WOM Analytics",
+        "url": "https://arjuanfelipe.com/applications/wom/",
+        "category": "WEB APP · ANALYTICS",
+        "preview": "/assets/applications/wom.svg",
+        "body": (
+            "Decision-oriented dashboard system for a contact-center "
+            "operation: a control tower of prioritised exceptions plus "
+            "executive, supervisor and agent cockpits. Access is gated "
+            "behind authentication."
+        ),
+    },
 ]
 
 INDEX_META = {
     "title": "Applications — Juan Felipe",
     "description": (
         "Applications and tools by Juan Felipe that are live on their own "
-        "domain: July Melisa, KAIZEN and Colorimetría."
+        "domain: July Melisa, KAIZEN, Colorimetría and WOM Analytics."
     ),
     "canonical": "https://arjuanfelipe.com/applications/",
     "heading": "Applications",

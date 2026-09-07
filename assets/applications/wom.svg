@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="WOM Analytics">
+  <rect width="1200" height="600" fill="#10141a"/>
+  <g stroke="#272c32" stroke-width="1">
+    <path d="M0 150H1200M0 300H1200M0 450H1200"/>
+    <path d="M240 0V600M480 0V600M720 0V600M960 0V600"/>
+  </g>
+  <g fill="#181c22" stroke="#5d6269" stroke-width="1.5">
+    <rect x="80"  y="360" width="200" height="150" rx="8"/>
+    <rect x="320" y="360" width="200" height="150" rx="8"/>
+    <rect x="560" y="360" width="200" height="150" rx="8"/>
+    <rect x="800" y="360" width="200" height="150" rx="8"/>
+  </g>
+  <rect x="560" y="360" width="200" height="150" rx="8" fill="#3b1908" stroke="#ea6a1e" stroke-width="2.5"/>
+  <g fill="#5d6269">
+    <rect x="104" y="388" width="90" height="10" rx="5"/>
+    <rect x="344" y="388" width="90" height="10" rx="5"/>
+    <rect x="824" y="388" width="90" height="10" rx="5"/>
+  </g>
+  <rect x="584" y="388" width="90" height="10" rx="5" fill="#ea6a1e"/>
+  <g fill="#e7ebee" font-family="ui-monospace, Menlo, Consolas, monospace" font-weight="700">
+    <text x="104" y="470" font-size="44">94%</text>
+    <text x="344" y="470" font-size="44">7:12</text>
+    <text x="584" y="470" font-size="44" fill="#ea6a1e">-3.1</text>
+    <text x="824" y="470" font-size="44">41</text>
+  </g>
+  <polyline points="80,250 240,250 360,180 520,220 680,120 840,200 1000,150 1120,110"
+    fill="none" stroke="#5d6269" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="80" y="120" fill="#e7ebee" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="80" font-weight="700" letter-spacing="8">WOM</text>
+  <text x="84" y="164" fill="#909396" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="22" letter-spacing="6">CONTACT CENTER ANALYTICS</text>
+</svg>

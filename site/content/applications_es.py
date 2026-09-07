@@ -37,13 +37,24 @@ APPLICATIONS = [
             "y un segundo factor de verificación."
         ),
     },
+    {
+        **_EN[3],
+        "category": "WEB APP · ANALÍTICA",
+        "body": (
+            "Sistema de dashboards orientado a la decisión para una "
+            "operación de contact center: una torre de control de "
+            "excepciones priorizadas y cockpits ejecutivo, de "
+            "supervisión y de agente. El acceso está restringido con "
+            "autenticación."
+        ),
+    },
 ]
 
 INDEX_META = {
     "title": "Aplicaciones — Juan Felipe",
     "description": (
         "Aplicaciones y herramientas de Juan Felipe que están en línea en "
-        "su propio dominio: July Melisa, KAIZEN y Colorimetría."
+        "su propio dominio: July Melisa, KAIZEN, Colorimetría y WOM Analytics."
     ),
     "canonical": "https://arjuanfelipe.com/es/applications/",
     "heading": "Aplicaciones",
