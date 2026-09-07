@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Notas sobre construir un NOC pequeño y una capa de observabilidad para un solo VPS." />
+  <title>Construir un NOC simple para mi VPS — Juan Felipe</title>
+  <link rel="canonical" href="https://arjuanfelipe.com/es/notes/construir-un-noc-para-mi-vps/" />
+  <link rel="alternate" hreflang="en" href="https://arjuanfelipe.com/notes/building-a-noc-for-my-vps/" />
+  <link rel="alternate" hreflang="es" href="https://arjuanfelipe.com/es/notes/construir-un-noc-para-mi-vps/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050807'/%3E%3Crect x='7' y='9' width='11' height='14' fill='%237dff6b'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+
+<body>
+  <div class="page">
+
+    <header>
+      <a class="brand" href="/es/">arjuanfelipe.com<span class="cursor"></span></a>
+
+      <nav aria-label="Navegación principal">
+        <a href="/es/#about">Sobre mí</a>
+        <a href="/es/#work-lab">Work &amp; Lab</a>
+        <a href="/es/notes/">Notas</a>
+        <span class="lang">
+          <a href="/notes/building-a-noc-for-my-vps/">EN</a> / <a href="/es/notes/construir-un-noc-para-mi-vps/" aria-current="true">ES</a>
+        </span>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section style="border-top:0">
+        <div class="section-head">
+          <h2>Construir un NOC simple para mi VPS</h2>
+        </div>
+        <div class="note-meta">Sep 2026 · notas</div>
+
+        <article class="note-body">
+          <p>
+            <em>Nota inicial — reemplazar con el desarrollo completo.</em>
+          </p>
+
+          <p>
+            En un solo VPS detrás de Cloudflare corro varias cosas pequeñas: un
+            sitio estático, un par de apps Node y algunos stacks de Docker. Apenas
+            hay más de un servicio en la máquina, "¿está arriba?" deja de ser una
+            pregunta que puedas responder de memoria. Así que construí
+            <strong>Kaizen</strong>: un NOC diminuto que me da una sola pantalla
+            para toda la máquina.
+          </p>
+
+          <h3>Qué observa</h3>
+          <p>
+            Nginx es la única puerta de entrada, así que su <code>stub_status</code>
+            se expone solo en <code>127.0.0.1</code> y se consulta desde dentro
+            del namespace de red. Cada app tiene un endpoint <code>/health</code>
+            en un puerto de loopback. El estado de los contenedores, las políticas
+            de reinicio y el disco vienen del socket de Docker a través de un
+            proxy de solo lectura. <code>fail2ban</code> y el log de auth alimentan
+            el panel de "quién está tocando la puerta".
+          </p>
+
+          <h3>Reglas de diseño</h3>
+          <p>
+            Una sola cuenta admin. Ningún puerto entrante más allá de 22/80/443.
+            Todos los upstreams en loopback. El dashboard lee; nunca actúa sobre
+            el host. Los backups corren desde cron y se verifican, no se asumen.
+          </p>
+
+          <h3>Qué haría distinto</h3>
+          <p>
+            Empezar con los endpoints de health desde el día uno — meterlos
+            después en todos los servicios es la parte lenta. Y mantener el NOC
+            aburrido: en cuanto necesita que lo cuiden a él, falló en su trabajo.
+          </p>
+        </article>
+
+        <a class="note-back" href="/es/notes/">← Todas las notas</a>
+      </section>
+
+      <footer>
+        <div class="footer-copy">
+          <strong>Diseñado, construido y testeado por Juan Felipe.</strong>
+        </div>
+        <div class="footer-links">
+          <a href="/es/">← Inicio</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,97 +1,79 @@
-(() => {
-  const KEY = "arjuanfelipe:language-scroll-y";
-  const TRANSITION_KEY = "arjuanfelipe:language-transition";
-  const links = document.querySelectorAll("[data-language-switch]");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/*
+  Animated terminal:
+  - types each command character by character
+  - keeps the card at a fixed height, latest lines anchored to the bottom
+  - runs "clear" and starts again
+  Language-neutral content, shared by the EN and ES pages.
+*/
+const terminal = document.getElementById("terminal-screen");
 
-  for (const link of links) {
-    link.addEventListener("click", (event) => {
-      try {
-        sessionStorage.setItem(KEY, String(window.scrollY));
-        sessionStorage.setItem(TRANSITION_KEY, "1");
-      } catch (_) {}
+if (terminal) {
+  const commands = [
+    { command: "whoami", output: "juan_felipe" },
+    { command: "focus", output: "quality · data · engineering" },
+    { command: "skills", output: "SQL · Python · Java" },
+    { command: "building", output: "Kaizen · Colorimetria · WOM" },
+    { command: "experience", output: "QA · Data · BI · Automation" },
+    { command: "status", output: "building_" }
+  ];
 
-      if (reduceMotion) return;
-      event.preventDefault();
-      document.documentElement.classList.add("site-language-leaving");
-      window.setTimeout(() => { window.location.href = link.href; }, 130);
-    });
-  }
+  const prompt = "user@arjuanfelipe:~$";
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-  let saved = null;
-  let arriving = false;
-  try {
-    saved = sessionStorage.getItem(KEY);
-    if (saved !== null) sessionStorage.removeItem(KEY);
-    arriving = sessionStorage.getItem(TRANSITION_KEY) === "1";
-    if (arriving) sessionStorage.removeItem(TRANSITION_KEY);
-  } catch (_) {}
-
-  if (arriving && !reduceMotion) {
-    document.documentElement.classList.add("site-language-arriving");
-  }
-
-  if (saved !== null) {
-    const y = Number(saved);
-    if (Number.isFinite(y)) {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        window.scrollTo(0, y);
-        document.documentElement.classList.remove("site-language-arriving");
-      }));
-    }
-  } else if (arriving) {
-    requestAnimationFrame(() =>
-      document.documentElement.classList.remove("site-language-arriving"));
-  }
-
-  // ---------------------------------------------------------------- theme --
-  // The document already carries a resolved data-theme: "dark" from the
-  // server, or the stored preference applied by the <head> bootstrap. This
-  // only keeps the control in sync with it and writes new choices down.
-  const THEME_KEY = "arjuanfelipe:theme";
-  const root = document.documentElement;
-  const buttons = document.querySelectorAll("[data-theme-set]");
-  const themeColor = document.querySelector('meta[name="theme-color"]');
-
-  const applyTheme = (theme) => {
-    root.dataset.theme = theme;
-    for (const button of buttons) {
-      button.setAttribute("aria-pressed",
-        String(button.dataset.themeSet === theme));
-    }
-    // The browser chrome colour is read back from the token layer rather than
-    // duplicated here, so the palette stays defined in exactly one place.
-    if (themeColor) {
-      const bg = getComputedStyle(root).getPropertyValue("--wds-bg").trim();
-      if (bg) themeColor.setAttribute("content", bg);
+  const typeInto = async (element, text, speed = 34) => {
+    for (const char of text) {
+      element.textContent += char;
+      await sleep(speed);
     }
   };
 
-  applyTheme(root.dataset.theme === "light" ? "light" : "dark");
+  const showCommand = async item => {
+    const commandLine = document.createElement("div");
+    commandLine.className = "terminal-line";
 
-  for (const button of buttons) {
-    button.addEventListener("click", () => {
-      const theme = button.dataset.themeSet;
-      applyTheme(theme);
-      try { localStorage.setItem(THEME_KEY, theme); } catch (_) {}
-    });
-  }
+    const promptSpan = document.createElement("span");
+    promptSpan.className = "prompt";
+    promptSpan.textContent = prompt + " ";
 
-  // ----------------------------------------------------------------- back --
-  // The "Back" control on /applications/ is a real link to Home, so it works
-  // with no script and on a direct visit. When there IS a same-origin page
-  // to go back to, step back to it instead of pushing Home onto the stack.
-  for (const el of document.querySelectorAll("[data-back]")) {
-    el.addEventListener("click", (event) => {
-      let sameOrigin = false;
-      try {
-        sameOrigin = document.referrer !== "" &&
-          new URL(document.referrer).origin === window.location.origin;
-      } catch (_) {}
-      if (sameOrigin && window.history.length > 1) {
-        event.preventDefault();
-        window.history.back();
+    const commandSpan = document.createElement("span");
+    commandSpan.className = "command";
+
+    commandLine.appendChild(promptSpan);
+    commandLine.appendChild(commandSpan);
+    terminal.appendChild(commandLine);
+
+    await typeInto(commandSpan, item.command, 68);
+    await sleep(520);
+
+    const outputLine = document.createElement("div");
+    outputLine.className = "terminal-line output";
+    outputLine.textContent = item.output;
+    terminal.appendChild(outputLine);
+
+    await sleep(1100);
+  };
+
+  const terminalLoop = async () => {
+    while (true) {
+      terminal.innerHTML = "";
+
+      for (const item of commands) {
+        await showCommand(item);
       }
-    });
-  }
-})();
+
+      const clearLine = document.createElement("div");
+      clearLine.className = "terminal-line terminal-clear";
+      clearLine.textContent = prompt + " clear";
+      terminal.appendChild(clearLine);
+
+      await sleep(250);
+      clearLine.classList.add("visible");
+      await sleep(600);
+
+      terminal.innerHTML = "";
+      await sleep(450);
+    }
+  };
+
+  terminalLoop();
+}
