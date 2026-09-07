@@ -20,12 +20,8 @@ on:
     paths:
       - "index.html"
       - "assets/**"
-      - "applications/**"
-      - "work/**"
-      - "lab/**"
-      - "cv/**"
+      - "notes/**"
       - "es/**"
-      - "identity/dist/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch: {}
 

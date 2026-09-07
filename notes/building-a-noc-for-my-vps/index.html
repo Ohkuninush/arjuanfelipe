@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Notes on building a small NOC and observability layer for a single VPS." />
+  <title>Building a simple NOC for my VPS — Juan Felipe</title>
+  <link rel="canonical" href="https://arjuanfelipe.com/notes/building-a-noc-for-my-vps/" />
+  <link rel="alternate" hreflang="es" href="https://arjuanfelipe.com/es/notes/construir-un-noc-para-mi-vps/" />
+  <link rel="alternate" hreflang="en" href="https://arjuanfelipe.com/notes/building-a-noc-for-my-vps/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050807'/%3E%3Crect x='7' y='9' width='11' height='14' fill='%237dff6b'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+
+<body>
+  <div class="page">
+
+    <header>
+      <a class="brand" href="/">arjuanfelipe.com<span class="cursor"></span></a>
+
+      <nav aria-label="Main navigation">
+        <a href="/#about">About</a>
+        <a href="/#work-lab">Work &amp; Lab</a>
+        <a href="/notes/">Notes</a>
+        <span class="lang">
+          <a href="/notes/building-a-noc-for-my-vps/" aria-current="true">EN</a> / <a href="/es/notes/construir-un-noc-para-mi-vps/">ES</a>
+        </span>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section style="border-top:0">
+        <div class="section-head">
+          <h2>Building a simple NOC for my VPS</h2>
+        </div>
+        <div class="note-meta">Sep 2026 · notes</div>
+
+        <article class="note-body">
+          <p>
+            <em>Starter note — replace with the full write-up.</em>
+          </p>
+
+          <p>
+            I run a few small things on a single VPS behind Cloudflare: a static
+            site, a couple of Node apps and some Docker stacks. Once there is more
+            than one service on a box, "is it up?" stops being a question you can
+            answer by memory. So I built <strong>Kaizen</strong>: a tiny NOC that
+            gives me one screen for the whole machine.
+          </p>
+
+          <h3>What it watches</h3>
+          <p>
+            Nginx is the single front door, so its <code>stub_status</code> is
+            exposed only on <code>127.0.0.1</code> and scraped from inside the
+            network namespace. Each app has a <code>/health</code> endpoint on a
+            loopback port. Container state, restart policies and disk come from
+            the Docker socket through a read-only proxy. <code>fail2ban</code> and
+            the auth log feed the "who is knocking" panel.
+          </p>
+
+          <h3>Design rules</h3>
+          <p>
+            One admin account. No inbound port beyond 22/80/443. Every upstream on
+            loopback. The dashboard reads; it never acts on the host. Backups run
+            from cron and are verified, not assumed.
+          </p>
+
+          <h3>What I'd do differently</h3>
+          <p>
+            Start with health endpoints on day one — retrofitting them across
+            services is the slow part. And keep the NOC boring: the moment it
+            needs its own babysitting, it has failed at its job.
+          </p>
+        </article>
+
+        <a class="note-back" href="/notes/">← All notes</a>
+      </section>
+
+      <footer>
+        <div class="footer-copy">
+          <strong>Designed, built and tested by Juan Felipe.</strong>
+        </div>
+        <div class="footer-links">
+          <a href="/">← Home</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
