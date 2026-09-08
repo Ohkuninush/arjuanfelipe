@@ -14,6 +14,8 @@
 
 html { scroll-behavior: smooth; }
 
+:target { scroll-margin-top: 100px; }
+
 body {
   margin: 0;
   background:
@@ -38,17 +40,21 @@ a:hover { color: var(--accent); }
     rgba(3, 11, 14, .76);
   background-size: 48px 48px;
   border-radius: 14px;
-  overflow: hidden;
+  overflow: clip;
   box-shadow: 0 30px 90px rgba(0,0,0,.28);
 }
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   min-height: 76px;
   padding: 0 38px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--line);
+  background: #070f11;
 }
 
 .brand {
@@ -315,6 +321,7 @@ h2::after {
 .timeline-client {
   display: inline-block;
   margin-top: 10px;
+  margin-right: 6px;
   color: #c8d5d4;
   font-size: 11px;
   border: 1px solid var(--line);
@@ -558,6 +565,8 @@ footer {
     gap: 12px;
     flex-wrap: wrap;
   }
+
+  :target { scroll-margin-top: 150px; }
 
   main { padding: 0 20px; }
 
