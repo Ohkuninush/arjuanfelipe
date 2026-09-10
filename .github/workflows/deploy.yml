@@ -1,16 +1,18 @@
-# Despliegue de arjuanfelipe.com al VPS (produccion).
+# Despliegue del sitio estatico al VPS de produccion.
 #
-# Push a main -> este workflow abre SSH al VPS con una clave dedicada cuyo
-# authorized_keys tiene `command="/opt/sites/arjuanfelipe/deploy.sh"` forzado:
-# la clave NO puede ejecutar nada mas. deploy.sh hace git fetch + reset --hard
-# origin/main y publica index.html en el webroot de Nginx de forma atomica.
-# No toca Nginx, DNS, TLS ni ninguna otra app del VPS.
+# Push a main -> este workflow abre SSH al host de deploy con una clave
+# dedicada cuyo authorized_keys fuerza `command=` al script de publicacion:
+# la clave no puede ejecutar nada mas. El script hace git fetch + reset --hard
+# origin/main y publica de forma atomica. No toca Nginx, DNS, TLS ni otras apps.
 #
-# Secrets requeridos en el repo (Settings -> Secrets and variables -> Actions):
-#   VPS_DEPLOY_KEY  -> clave PRIVADA ed25519 'arjuanfelipe_ci' (contenido completo)
+# Secrets requeridos (Settings -> Secrets and variables -> Actions):
+#   VPS_DEPLOY_KEY      clave privada ed25519 del runner (usuario dedicado sin sudo)
+#   VPS_DEPLOY_HOST     host de deploy
+#   VPS_DEPLOY_USER     usuario SSH dedicado
+#   VPS_DEPLOY_HOSTKEY  linea known_hosts fijada del host (no TOFU)
 #
-# Rollback de la migracion (no de un deploy): revertir los registros DNS de
-# Cloudflare al valor de Vercel (A apex 76.76.21.21 / CNAME www cname.vercel-dns.com).
+# Rollback de la migracion (no de un deploy): revertir los registros DNS al
+# proveedor de hosting anterior.
 
 name: deploy
 
@@ -29,24 +31,42 @@ concurrency:
   group: deploy-arjuanfelipe
   cancel-in-progress: false
 
+permissions: {}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: Production
     timeout-minutes: 5
     steps:
       - name: Trigger VPS deploy over SSH
         env:
           DEPLOY_KEY: ${{ secrets.VPS_DEPLOY_KEY }}
+          DEPLOY_HOST: ${{ secrets.VPS_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.VPS_DEPLOY_USER }}
+          DEPLOY_HOSTKEY: ${{ secrets.VPS_DEPLOY_HOSTKEY }}
         run: |
           set -euo pipefail
-          test -n "$DEPLOY_KEY" || { echo "::error::missing secret VPS_DEPLOY_KEY"; exit 1; }
+          for v in DEPLOY_KEY DEPLOY_HOST DEPLOY_USER DEPLOY_HOSTKEY; do
+            [ -n "${!v:-}" ] || { echo "::error::missing secret $v"; exit 1; }
+          done
           install -d -m 700 ~/.ssh
           printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          # Host key del VPS fijado (no TOFU).
-          echo '158.69.213.49 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEIW5gOp3Q8L9xRXoIk1KdCIXICxavuHs7do/B+whmP' > ~/.ssh/known_hosts
+          printf '%s\n' "$DEPLOY_HOSTKEY" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-          # El comando remoto es irrelevante: authorized_keys fuerza deploy.sh.
+          # authorized_keys fuerza el script remoto; el comando de aqui es irrelevante.
+          rc=0
           ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes -o IdentitiesOnly=yes \
-            ubuntu@158.69.213.49 deploy 2>&1 | tee deploy.log
-          grep -q "^deployed arjuanfelipe:" deploy.log
+            "$DEPLOY_USER@$DEPLOY_HOST" deploy > deploy.log 2>&1 || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::remote deploy failed (rc=$rc)"
+            sed 's/^/remote: /' deploy.log
+            exit "$rc"
+          fi
+          grep -q "^deployed arjuanfelipe:" deploy.log || {
+            echo "::error::deploy marker not found in remote output"
+            sed 's/^/remote: /' deploy.log
+            exit 1
+          }
+          grep "^deployed arjuanfelipe:" deploy.log
